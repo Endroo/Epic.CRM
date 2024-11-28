@@ -1,0 +1,6 @@
+@Epic.CRM.WebApi_HostAddress = http://localhost:5052
+
+GET {{Epic.CRM.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
