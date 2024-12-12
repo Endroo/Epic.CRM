@@ -19,10 +19,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Felhasznalo]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Munka]",
          "ObjectType": 0
       },

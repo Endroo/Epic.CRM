@@ -21,15 +21,15 @@ public partial class Munka
 
     public int? StatuszId { get; set; }
 
-    public int FelhasznaloId { get; set; }
+    public string FelhasznaloId { get; set; }
 
     public int? Ar { get; set; }
 
     public virtual Cim Cim { get; set; }
 
-    public virtual Felhasznalo Felhasznalo { get; set; }
-
     public virtual MunkaStatusz Statusz { get; set; }
 
     public virtual Ugyfel Ugyfel { get; set; }
+
+    public virtual Felhasznalo Felhasznalo { get; set; }
 }

@@ -15,7 +15,7 @@ public partial class Ugyfel
 
     public int? CimId { get; set; }
 
-    public int FelhasznaloId { get; set; }
+    public string FelhasznaloId { get; set; }
 
     public virtual Cim Cim { get; set; }
 

@@ -106,6 +106,8 @@ namespace Epic.CRM.WebApi.Controllers
             if (user is null)
                 return BadRequest("No user is found");
 
+            
+
             user.Nev = form.Nev;
             user.IsAdmin = form.IsAdmin;
             user.Tevekenyseg = form.Tevekenyseg;
@@ -128,6 +130,10 @@ namespace Epic.CRM.WebApi.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user is null)
                 return BadRequest("No user is found");
+
+            var userPrincipal = Request.HttpContext.User;
+            if (user == await _userManager.GetUserAsync(userPrincipal))
+                return BadRequest("You can not delete logged in user"); ;
 
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
