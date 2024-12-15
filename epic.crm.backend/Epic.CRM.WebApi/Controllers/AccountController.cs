@@ -12,9 +12,9 @@ namespace Epic.CRM.WebApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly SignInManager<Felhasznalo> _signInManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountController( SignInManager<Felhasznalo> signInManager)
+        public AccountController( SignInManager<IdentityUser> signInManager)
         {
             _signInManager = signInManager;
         }

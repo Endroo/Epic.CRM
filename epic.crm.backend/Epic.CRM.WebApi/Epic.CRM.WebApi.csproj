@@ -19,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Epic.CRM.BusinessLogic\Epic.CRM.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Epic.CRM.Common\Epic.CRM.Common.csproj" />
     <ProjectReference Include="..\Epic.CRM.DataDomain\Epic.CRM.DataDomain.csproj" />
   </ItemGroup>
 

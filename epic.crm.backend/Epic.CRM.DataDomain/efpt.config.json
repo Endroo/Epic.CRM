@@ -15,19 +15,23 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Cim]",
+         "Name": "[dbo].[Address]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Munka]",
+         "Name": "[dbo].[AppUser]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[MunkaStatusz]",
+         "Name": "[dbo].[Customer]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Ugyfel]",
+         "Name": "[dbo].[Work]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[WorkStatus]",
          "ObjectType": 0
       }
    ],

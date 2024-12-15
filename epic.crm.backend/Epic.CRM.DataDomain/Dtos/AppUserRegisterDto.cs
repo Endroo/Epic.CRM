@@ -8,27 +8,26 @@ using System.Threading.Tasks;
 
 namespace Epic.CRM.DataDomain.Dtos
 {
-    public class FelhasznaloRegisterDto : Dto<Felhasznalo>
+    public class AppUserRegisterDto : Dto<AppUser>
     {
         public string Email { get; set; }
         public string Password { get; set; }
-        public string Nev { get; set; }
+        public string Name { get; set; }
         public bool IsAdmin { get; set; }
-        public string Tevekenyseg { get; set; }
+        public string Profession { get; set; }
 
-        public override Felhasznalo Map()
+        public override AppUser Map()
         {
-            return new Felhasznalo
+            return new AppUser
             {
-                Email = Email,
                 IsAdmin = IsAdmin,
-                Nev = Nev,
-                Tevekenyseg = Tevekenyseg,
-                UserName = Email
+                Email = Email,
+                Name = Name,
+                Profession = Profession
             };
         }
 
-        public override FelhasznaloRegisterDto Map(Felhasznalo entity)
+        public override AppUserRegisterDto Map(AppUser entity)
         {
             throw new NotImplementedException();
         }

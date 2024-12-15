@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\Epic.CRM.Common\Epic.CRM.Common.csproj" />
   </ItemGroup>
 
 </Project>

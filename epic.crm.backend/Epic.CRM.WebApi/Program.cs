@@ -1,5 +1,9 @@
+using Epic.CRM.BusinessLogic.Interfaces;
+using Epic.CRM.BusinessLogic.Managers;
 using Epic.CRM.DataDomain;
+using Epic.CRM.DataDomain.Interfaces.Repositories;
 using Epic.CRM.DataDomain.Models;
+using Epic.CRM.DataDomain.Repositories;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -21,7 +25,7 @@ var connectionString = builder.Configuration.GetConnectionString("EpicCrmConnect
 builder.Services.AddDbContext<EpicCrmDbContext>(x => x.UseSqlServer(connectionString));
 
 builder.Services.AddAuthorization();
-builder.Services.AddIdentity<Felhasznalo, IdentityRole>(opt =>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(opt =>
 {
     opt.Password.RequiredLength = 8;
     opt.User.RequireUniqueEmail = true;
@@ -44,6 +48,9 @@ builder.Services.ConfigureApplicationCookie(options => {
         return Task.CompletedTask;
     };
 });
+
+builder.Services.AddScoped<IAppUserManager, AppUserManager>();
+builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
 
 builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.None; });
 

@@ -1,4 +1,7 @@
-﻿using Epic.CRM.DataDomain.Dtos;
+﻿using Epic.CRM.BusinessLogic.Helpers;
+using Epic.CRM.BusinessLogic.Interfaces;
+using Epic.CRM.Common;
+using Epic.CRM.DataDomain.Dtos;
 using Epic.CRM.DataDomain.Models;
 
 using Microsoft.AspNetCore.Authorization;
@@ -13,137 +16,98 @@ namespace Epic.CRM.WebApi.Controllers
     [Route("api/[controller]")]
     [Authorize(Roles = "Admin")]
     [ApiController]
-    
+
     public class UserController : ControllerBase
     {
-        private readonly UserManager<Felhasznalo> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAppUserManager _appUserManager;
 
-        public UserController(UserManager<Felhasznalo> userManager)
+        public UserController(UserManager<IdentityUser> userManager, IAppUserManager appUserManager)
         {
             _userManager = userManager;
+            _appUserManager = appUserManager;
         }
 
 
-        // GET: api/<UserController>
         [HttpGet]
-        
-        [ProducesResponseType(typeof(IEnumerable<FelhasznaloDto>), 200)]
-        public async Task<IActionResult> Get()
+        [ProducesResponseType(typeof(PageResult<IEnumerable<AppUserDto>>), 200)]
+        public async Task<IActionResult> Get([FromQuery] QueryParams queryParams)
         {
-            return Ok(await _userManager.Users.Select(u => new FelhasznaloDto().Map(u)).ToListAsync());
+            var result = await _appUserManager.GetAll(queryParams);
+
+            return Ok(result);
         }
 
-        // GET: api/<UserController>
-        [HttpGet ("id: {id}")]
-        [ProducesResponseType(typeof(IEnumerable<FelhasznaloDto>), 200)]
-        public async Task<IActionResult> Get(string id)
+        [HttpGet("id:{id}")]
+        [ProducesResponseType(typeof(DataResult<AppUserDto>), 200)]
+        public async Task<IActionResult> Get(int id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user is null)
-                return BadRequest("No user is found");
+            var result = await _appUserManager.GetById(id);
 
-            return Ok(new FelhasznaloDto().Map(user));
+            return Ok(result);
         }
 
-        [HttpGet("username: {userName}")]
-        [ProducesResponseType(typeof(IEnumerable<FelhasznaloDto>), 200)]
+        [HttpGet("username:{userName}")]
+        [ProducesResponseType(typeof(DataResult<AppUserDto>), 200)]
         public async Task<IActionResult> GetByUserName(string userName)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user is null)
-                return BadRequest("No user is found");
+            var result = await _appUserManager.GetByUserName(userName);
 
-            return Ok(new FelhasznaloDto().Map(user));
+            return Ok(result);
         }
 
-        [HttpGet("login_user")]
-        [ProducesResponseType(typeof(FelhasznaloDto), 200)]
+        [HttpGet("loggedin_user")]
+        [ProducesResponseType(typeof(DataResult<AppUserDto>), 200)]
         public async Task<IActionResult> GetLoginUser()
         {
             var userPrincipal = Request.HttpContext.User;
-            var user = await _userManager.GetUserAsync(userPrincipal);
+            var result = await _appUserManager.GetLoggedInUser(userPrincipal);
 
-            if (user is null)
-                return BadRequest("No user is found");
-
-            return Ok(new FelhasznaloDto().Map(user));
+            return Ok(result);
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] FelhasznaloRegisterDto form)
+        [ProducesResponseType(typeof(Result), 200)]
+        public async Task<IActionResult> Register([FromBody] AppUserRegisterDto form)
         {
             if (form is null)
                 return BadRequest();
 
-            Felhasznalo felhasznalo = form.Map();
+            var result = await _appUserManager.CreateUser(form);
 
-            var result = await _userManager.CreateAsync(felhasznalo, form.Password);
+            if (result.ResultStatus == ResultStatusEnum.Fail)
+                return BadRequest(result.Errors);
 
-            if(!result.Succeeded)
-            {
-                var errors = result.Errors.Select(x => x.Description);
-
-                return BadRequest(errors);
-            }
-
-            result = await _userManager.AddToRoleAsync(felhasznalo, form.IsAdmin ? "Admin" : "User");
-
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(x => x.Description);
-
-                return BadRequest(errors);
-            }
-
-            return Ok();
+            return Ok(result);
         }
 
-        
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] FelhasznaloEditDto form)
+        public async Task<IActionResult> Put(int? id, [FromBody] AppUserEditDto form)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user is null)
-                return BadRequest("No user is found");
+            if (form is null || id is null)
+                return BadRequest();
 
-            
+            var result = await _appUserManager.EditUser(id.Value, form);
 
-            user.Nev = form.Nev;
-            user.IsAdmin = form.IsAdmin;
-            user.Tevekenyseg = form.Tevekenyseg;
+            if (result.ResultStatus == ResultStatusEnum.Fail)
+                return BadRequest(result.Errors);
 
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(x => x.Description);
-
-                return BadRequest(errors);
-            }
-
-            return Ok();
+            return Ok(result);
         }
 
-        // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user is null)
-                return BadRequest("No user is found");
+            if (id is null)
+                return BadRequest();
 
-            var userPrincipal = Request.HttpContext.User;
-            if (user == await _userManager.GetUserAsync(userPrincipal))
-                return BadRequest("You can not delete logged in user"); ;
+            var result = await _appUserManager.DeleteUser(id.Value);
 
-            var result = await _userManager.DeleteAsync(user);
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(x => x.Description);
+            if (result.ResultStatus == ResultStatusEnum.Fail)
+                return BadRequest(result.Errors);
 
-                return BadRequest(errors);
-            }
-
-            return Ok();
+            return Ok(result);
         }
     }
 }

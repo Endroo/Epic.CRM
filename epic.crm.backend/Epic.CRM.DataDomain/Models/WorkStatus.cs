@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Epic.CRM.DataDomain.Models;
 
-public partial class MunkaStatusz
+public partial class WorkStatus
 {
-    public int MunkaStatuszId { get; set; }
+    public int WorkStatusId { get; set; }
 
-    public string StatuszMegnevezes { get; set; }
+    public string Name { get; set; }
 
-    public virtual ICollection<Munka> Munka { get; set; } = new List<Munka>();
+    public virtual ICollection<Work> Work { get; set; } = new List<Work>();
 }
