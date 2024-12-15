@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -58,6 +59,7 @@ namespace Epic.CRM.DataDomain.Repositories
                                 query.OrderBy(x => x.IsAdmin);
                         break;
                     default:
+                        query = query.OrderByDescending(x => x.AppUserId);
                         break;
                 }
             }
@@ -84,14 +86,14 @@ namespace Epic.CRM.DataDomain.Repositories
             return await query.ToListAsync();
         }
 
-        public AppUser GetById(int appUserId)
+        public AppUser GetById(int appUserId, bool tracked = false)
         {
-            return FindOne(x => x.AppUserId == appUserId, new FindOptions { IsAsNoTracking = true });
+            return FindOne(x => x.AppUserId == appUserId, new FindOptions { IsAsNoTracking = tracked });
         }
 
-        public AppUser GetByIdentityId(string identityId)
+        public AppUser GetByIdentityId(string identityId, bool tracked = false)
         {
-            return FindOne(x => x.AspNetUserId == identityId, new FindOptions { IsAsNoTracking = true });
+            return FindOne(x => x.AspNetUserId == identityId, new FindOptions { IsAsNoTracking = tracked });
         }
     }
 }

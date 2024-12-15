@@ -11,8 +11,8 @@ namespace Epic.CRM.DataDomain.Interfaces.Repositories
 {
     public interface IAppUserRepository : IRepository<AppUser>
     {
-        AppUser GetByIdentityId(string identityId);
-        AppUser GetById(int appUserId);
+        AppUser GetByIdentityId(string identityId, bool tracked = false);
+        AppUser GetById(int appUserId, bool tracked = false);
         Task<IEnumerable<AppUser>> GetAll(QueryParams queryParams);
     }
 }

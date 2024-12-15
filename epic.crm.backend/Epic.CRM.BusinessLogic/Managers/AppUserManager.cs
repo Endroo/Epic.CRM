@@ -87,7 +87,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             var result = new Result();
             try
             {
-                var appUser = _appUserRepository.GetById(appUserId);
+                var appUser = _appUserRepository.GetById(appUserId, tracked: true);
                 if (appUser is not null)
                     _appUserRepository.Delete(appUser);
                 else
@@ -109,7 +109,7 @@ namespace Epic.CRM.BusinessLogic.Managers
                 result = EditUserValidation(dto);
                 if (result.ResultStatus == ResultStatusEnum.Success)
                 {
-                    var appUser = _appUserRepository.GetById(appUserId);
+                    var appUser = _appUserRepository.GetById(appUserId, tracked: true);
                     if (appUser is not null)
                     {
                         appUser.Name = dto.Name;
