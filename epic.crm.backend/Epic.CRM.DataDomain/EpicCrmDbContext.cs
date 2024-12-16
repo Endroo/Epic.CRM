@@ -18,7 +18,9 @@ namespace Epic.CRM.DataDomain
     {
         public EpicCrmDbContext(DbContextOptions<EpicCrmDbContext> options) :
             base(options)
-        { }
+        {
+            this.ChangeTracker.LazyLoadingEnabled = false;
+        }
 
         public virtual DbSet<Address> Address { get; set; }
 
@@ -54,6 +56,8 @@ namespace Epic.CRM.DataDomain
                 entity.Property(e => e.Profession)
                     .IsRequired()
                     .HasMaxLength(50);
+                entity.Navigation(u => u.Customer).AutoInclude();
+                entity.Navigation(u => u.Work).AutoInclude();
             });
 
             modelBuilder.Entity<Customer>(entity =>

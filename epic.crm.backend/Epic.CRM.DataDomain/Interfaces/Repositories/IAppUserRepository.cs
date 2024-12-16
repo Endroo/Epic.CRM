@@ -1,4 +1,5 @@
 ﻿using Epic.CRM.Common;
+using Epic.CRM.DataDomain.Helpers;
 using Epic.CRM.DataDomain.Models;
 
 using System;
@@ -11,8 +12,8 @@ namespace Epic.CRM.DataDomain.Interfaces.Repositories
 {
     public interface IAppUserRepository : IRepository<AppUser>
     {
-        AppUser GetByIdentityId(string identityId, bool tracked = false);
-        AppUser GetById(int appUserId, bool tracked = false);
+        AppUser GetByIdentityId(string identityId, FindOptions findOptions = null);
+        AppUser GetById(int appUserId, FindOptions findOptions = null);
         Task<IEnumerable<AppUser>> GetAll(QueryParams queryParams);
     }
 }

@@ -17,15 +17,15 @@ namespace Epic.CRM.DataDomain.Repositories
 {
     public class AppUserRepository : BaseRepository<AppUser>, IAppUserRepository
     {
-        public AppUserRepository(EpicCrmDbContext empDBContext) : base(empDBContext)
+        private readonly EpicCrmDbContext _epicCRMDBContext;
+        public AppUserRepository(EpicCrmDbContext epicCRMDBContext) : base(epicCRMDBContext)
         {
-
+            _epicCRMDBContext = epicCRMDBContext;
         }
 
         public async Task<IEnumerable<AppUser>> GetAll(QueryParams queryParams)
         {
             var query = GetAll(new FindOptions { IsAsNoTracking = true });
-
             int pageIndex = 0;
 
             if (queryParams.SortColumn is not null)
@@ -86,14 +86,14 @@ namespace Epic.CRM.DataDomain.Repositories
             return await query.ToListAsync();
         }
 
-        public AppUser GetById(int appUserId, bool tracked = false)
+        public AppUser GetById(int appUserId, FindOptions findOptions = null)
         {
-            return FindOne(x => x.AppUserId == appUserId, new FindOptions { IsAsNoTracking = tracked });
+            return FindOne(x => x.AppUserId == appUserId, findOptions);
         }
 
-        public AppUser GetByIdentityId(string identityId, bool tracked = false)
+        public AppUser GetByIdentityId(string identityId, FindOptions findOptions = null)
         {
-            return FindOne(x => x.AspNetUserId == identityId, new FindOptions { IsAsNoTracking = tracked });
+            return FindOne(x => x.AspNetUserId == identityId, findOptions);
         }
     }
 }

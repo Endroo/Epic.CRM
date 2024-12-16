@@ -87,7 +87,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             var result = new Result();
             try
             {
-                var appUser = _appUserRepository.GetById(appUserId, tracked: true);
+                var appUser = _appUserRepository.GetById(appUserId, new FindOptions { IsIgnoreAutoIncludes = true });
                 if (appUser is not null)
                     _appUserRepository.Delete(appUser);
                 else
@@ -109,7 +109,7 @@ namespace Epic.CRM.BusinessLogic.Managers
                 result = EditUserValidation(dto);
                 if (result.ResultStatus == ResultStatusEnum.Success)
                 {
-                    var appUser = _appUserRepository.GetById(appUserId, tracked: true);
+                    var appUser = _appUserRepository.GetById(appUserId, new FindOptions { IsIgnoreAutoIncludes = true });
                     if (appUser is not null)
                     {
                         appUser.Name = dto.Name;
@@ -155,7 +155,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             var result = new DataResult<AppUserDto>();
             try
             {
-                var appUser = _appUserRepository.GetById(appUserId);
+                var appUser = _appUserRepository.GetById(appUserId, new FindOptions { IsAsNoTracking = true });
                 if (appUser is not null)
                 {
                     var identityUser = await _userManager.FindByIdAsync(appUser.AspNetUserId);
@@ -184,7 +184,7 @@ namespace Epic.CRM.BusinessLogic.Managers
 
                 if (identityUser is not null)
                 {
-                    var appUser = _appUserRepository.GetByIdentityId(identityUser.Id);
+                    var appUser = _appUserRepository.GetByIdentityId(identityUser.Id, new FindOptions { IsAsNoTracking = true });
                     if (appUser is not null)
                         result.Data = new AppUserDto().Map(appUser);
                     else
@@ -210,7 +210,7 @@ namespace Epic.CRM.BusinessLogic.Managers
 
                 if (identityUser is not null)
                 {
-                    var appUser = _appUserRepository.GetByIdentityId(identityUser.Id);
+                    var appUser = _appUserRepository.GetByIdentityId(identityUser.Id, new FindOptions { IsAsNoTracking = true });
                     if (appUser is not null)
                         result.Data = new AppUserDto().Map(appUser);
                     else

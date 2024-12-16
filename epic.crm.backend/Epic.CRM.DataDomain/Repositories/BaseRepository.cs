@@ -15,6 +15,7 @@ namespace Epic.CRM.DataDomain.Repositories
     public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly EpicCrmDbContext _context;
+
         public BaseRepository(EpicCrmDbContext empDBContext)
         {
             _context = empDBContext;
@@ -76,23 +77,24 @@ namespace Epic.CRM.DataDomain.Repositories
         {
             return _context.Set<TEntity>().Count(predicate);
         }
-        private DbSet<TEntity> Get(FindOptions? findOptions = null)
+        private IQueryable<TEntity> Get(FindOptions? findOptions = null)
         {
             findOptions ??= new FindOptions();
-            var entity = _context.Set<TEntity>();
+            var query = _context.Set<TEntity>();
             if (findOptions.IsAsNoTracking && findOptions.IsIgnoreAutoIncludes)
             {
-                entity.IgnoreAutoIncludes().AsNoTracking();
+                return query.AsNoTracking().IgnoreAutoIncludes();
             }
             else if (findOptions.IsIgnoreAutoIncludes)
             {
-                entity.IgnoreAutoIncludes();
+                return query.IgnoreAutoIncludes();
             }
             else if (findOptions.IsAsNoTracking)
             {
-                entity.AsNoTracking();
+                return query.AsNoTracking();
             }
-            return entity;
+
+            return query.AsQueryable<TEntity>();
         }
     }
 }
