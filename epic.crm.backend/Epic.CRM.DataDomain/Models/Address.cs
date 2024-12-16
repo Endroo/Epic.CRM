@@ -13,7 +13,7 @@ public partial class Address
 
     public string City { get; set; }
 
-    public string Address1 { get; set; }
+    public string HouseAddress { get; set; }
 
     public virtual ICollection<Customer> Customer { get; set; } = new List<Customer>();
 

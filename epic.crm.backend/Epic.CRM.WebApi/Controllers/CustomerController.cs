@@ -1,43 +1,79 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Epic.CRM.BusinessLogic.Helpers;
+using Epic.CRM.BusinessLogic.Interfaces;
+using Epic.CRM.BusinessLogic.Managers;
+using Epic.CRM.Common;
+using Epic.CRM.DataDomain.Dtos;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Epic.CRM.WebApi.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin,User")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        // GET: api/<CustomerController>
+        private readonly ICustomerManager _customerManager;
+
+        public CustomerController(ICustomerManager customerManager)
+        {
+            _customerManager = customerManager;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        [ProducesResponseType(typeof(PageResult<IEnumerable<AppUserDto>>), 200)]
+        public async Task<IActionResult> Get([FromQuery] QueryParams queryParams)
         {
-            return new string[] { "value1", "value2" };
+            var result = await _customerManager.GetAll(queryParams);
+
+            return Ok(result);
         }
 
-        // GET api/<CustomerController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPost("register")]
+        [ProducesResponseType(typeof(Result), 200)]
+        public async Task<IActionResult> Register([FromBody] CustomerRegisterDto form)
         {
-            return "value";
+            if (form is null)
+                return BadRequest();
+
+            var result = await _customerManager.CreateCustomer(form);
+
+            if (result.ResultStatus == ResultStatusEnum.Fail)
+                return BadRequest(result.Errors);
+
+            return Ok(result);
         }
 
-        // POST api/<CustomerController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<CustomerController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int? id, [FromBody] CustomerRegisterDto form)
         {
+            if (form is null || id is null)
+                return BadRequest();
+
+            var result = await _customerManager.EditCustomer(id.Value, form);
+
+            if (result.ResultStatus == ResultStatusEnum.Fail)
+                return BadRequest(result.Errors);
+
+            return Ok(result);
         }
 
-        // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
+            if (id is null)
+                return BadRequest();
+
+            var result = await _customerManager.DeleteCustomer(id.Value);
+
+            if (result.ResultStatus == ResultStatusEnum.Fail)
+                return BadRequest(result.Errors);
+
+            return Ok(result);
         }
     }
 }

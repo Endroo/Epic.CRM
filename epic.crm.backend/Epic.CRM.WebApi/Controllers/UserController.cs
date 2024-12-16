@@ -60,8 +60,7 @@ namespace Epic.CRM.WebApi.Controllers
         [ProducesResponseType(typeof(DataResult<AppUserDto>), 200)]
         public async Task<IActionResult> GetLoginUser()
         {
-            var userPrincipal = Request.HttpContext.User;
-            var result = await _appUserManager.GetLoggedInUser(userPrincipal);
+            var result = await _appUserManager.GetLoggedInUser();
 
             return Ok(result);
         }

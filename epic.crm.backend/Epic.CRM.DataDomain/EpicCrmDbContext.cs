@@ -38,7 +38,7 @@ namespace Epic.CRM.DataDomain
 
             modelBuilder.Entity<Address>(entity =>
             {
-                entity.Property(e => e.Address1)
+                entity.Property(e => e.HouseAddress)
                     .HasMaxLength(250)
                     .HasColumnName("Address");
                 entity.Property(e => e.City).HasMaxLength(250);
@@ -71,8 +71,9 @@ namespace Epic.CRM.DataDomain
 
                 entity.HasOne(d => d.AppUser).WithMany(p => p.Customer)
                     .HasForeignKey(d => d.AppUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Customer_AppUser");
+                entity.Navigation(c => c.Address).AutoInclude();
             });
 
             modelBuilder.Entity<Work>(entity =>
@@ -86,7 +87,7 @@ namespace Epic.CRM.DataDomain
 
                 entity.HasOne(d => d.AppUser).WithMany(p => p.Work)
                     .HasForeignKey(d => d.AppUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Work_AppUser");
 
                 entity.HasOne(d => d.Customer).WithMany(p => p.Work)

@@ -14,7 +14,7 @@ namespace Epic.CRM.BusinessLogic.Interfaces
     public interface IAppUserManager
     {
         Task<Result> CreateUser(AppUserRegisterDto dto);
-        Task<DataResult<AppUserDto>> GetLoggedInUser(ClaimsPrincipal userPrincipal);
+        Task<DataResult<AppUserDto>> GetLoggedInUser();
         Task<DataResult<AppUserDto>> GetByUserName(string userName); 
         Task<DataResult<AppUserDto>> GetById(int id);
         Task<PageResult<IEnumerable<AppUserDto>>> GetAll(QueryParams queryParams);

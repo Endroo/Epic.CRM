@@ -1,4 +1,6 @@
-﻿using Epic.CRM.BusinessLogic.Helpers;
+﻿using Azure.Core;
+
+using Epic.CRM.BusinessLogic.Helpers;
 using Epic.CRM.BusinessLogic.Interfaces;
 using Epic.CRM.Common;
 using Epic.CRM.DataDomain.Dtos;
@@ -6,11 +8,14 @@ using Epic.CRM.DataDomain.Helpers;
 using Epic.CRM.DataDomain.Interfaces.Repositories;
 using Epic.CRM.DataDomain.Models;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -24,11 +29,13 @@ namespace Epic.CRM.BusinessLogic.Managers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IAppUserRepository _appUserRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AppUserManager(UserManager<IdentityUser> userManager, IAppUserRepository appUserRepository)
+        public AppUserManager(UserManager<IdentityUser> userManager, IAppUserRepository appUserRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _appUserRepository = appUserRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Result> CreateUser(AppUserRegisterDto dto)
@@ -55,11 +62,14 @@ namespace Epic.CRM.BusinessLogic.Managers
                             return result;
                         }
 
-                        var addToRoleResult = await _userManager.AddToRoleAsync(identityUser, dto.IsAdmin ? "Admin" : "User");
+                        List<string> roles = new List<string> { "User" };
+                        if (dto.IsAdmin) roles.Add("Admin");
+
+                        var addToRoleResult = await _userManager.AddToRolesAsync(identityUser, roles);
 
                         if (!addToRoleResult.Succeeded)
                         {
-                            result.Errors.AddRange(registerUserResult.Errors.Select(x => x.Description));
+                            result.Errors.AddRange(addToRoleResult.Errors.Select(x => x.Description));
                             return result;
                         }
 
@@ -87,11 +97,42 @@ namespace Epic.CRM.BusinessLogic.Managers
             var result = new Result();
             try
             {
-                var appUser = _appUserRepository.GetById(appUserId, new FindOptions { IsIgnoreAutoIncludes = true });
-                if (appUser is not null)
-                    _appUserRepository.Delete(appUser);
-                else
-                    result.Errors.Add($"No user found");
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    var appUser = _appUserRepository.GetById(appUserId, new FindOptions { IsIgnoreAutoIncludes = true });
+                    var identityUser = await _userManager.FindByIdAsync(appUser.AspNetUserId);
+                    var loggedInUser = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+
+                    if(loggedInUser.Id == identityUser.Id)
+                    {
+                        result.Errors.Add($"Can not delete logged in user.");
+                        return result;
+                    }
+
+                    if (appUser is not null)
+                        _appUserRepository.Delete(appUser);
+                    else
+                    {
+                        result.Errors.Add($"No user found");
+                        return result;
+                    }
+
+                    if (identityUser is not null)
+                    {
+                        var deleteResult = await _userManager.DeleteAsync(identityUser);
+                        if(!deleteResult.Succeeded)
+                        {
+                            result.Errors.AddRange(deleteResult.Errors.Select(x => x.Description));
+                        }     
+                    }                        
+                    else
+                    {
+                        result.Errors.Add($"No user found");
+                        return result;
+                    }
+
+                    scope.Complete();
+                }
             }
             catch (Exception ex)
             {
@@ -109,18 +150,53 @@ namespace Epic.CRM.BusinessLogic.Managers
                 result = EditUserValidation(dto);
                 if (result.ResultStatus == ResultStatusEnum.Success)
                 {
-                    var appUser = _appUserRepository.GetById(appUserId, new FindOptions { IsIgnoreAutoIncludes = true });
-                    if (appUser is not null)
+                    using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        appUser.Name = dto.Name;
-                        appUser.Profession = dto.Profession;
-                        appUser.IsAdmin = dto.IsAdmin.Value;
+                        var appUser = _appUserRepository.GetById(appUserId, new FindOptions { IsIgnoreAutoIncludes = true });
+                        if (appUser is not null)
+                        {
+                            if (appUser.IsAdmin != dto.IsAdmin)
+                            {
+                                var identityUser = await _userManager.FindByIdAsync(appUser.AspNetUserId);
+                                if (identityUser is null)
+                                {
+                                    result.Errors.Add("User not found.");
+                                    return result;
+                                }
 
-                        _appUserRepository.Update(appUser);
+                                if (appUser.IsAdmin && !dto.IsAdmin.Value)
+                                {
+                                    var removeResult = await _userManager.RemoveFromRoleAsync(identityUser, "Admin");
+                                    if (!removeResult.Succeeded)
+                                    {
+                                        result.Errors.AddRange(removeResult.Errors.Select(x => x.Description));
+                                        return result;
+                                    }
+                                }
+                                else if (!appUser.IsAdmin && dto.IsAdmin.Value)
+                                {
+                                    var addToRoleResult = await _userManager.AddToRoleAsync(identityUser, "Admin");
 
+                                    if (!addToRoleResult.Succeeded)
+                                    {
+                                        result.Errors.AddRange(addToRoleResult.Errors.Select(x => x.Description));
+                                        return result;
+                                    }
+                                }
+                            }
+
+                            appUser.Name = dto.Name;
+                            appUser.Profession = dto.Profession;
+                            appUser.IsAdmin = dto.IsAdmin.Value;
+
+                            _appUserRepository.Update(appUser);
+
+                        }
+                        else
+                            result.Errors.Add($"No user found");
+
+                        scope.Complete();   
                     }
-                    else
-                        result.Errors.Add($"No user found");
                 }
 
                 return result;
@@ -201,11 +277,13 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
-        public async Task<DataResult<AppUserDto>> GetLoggedInUser(ClaimsPrincipal userPrincipal)
+        public async Task<DataResult<AppUserDto>> GetLoggedInUser()
         {
             var result = new DataResult<AppUserDto>();
             try
             {
+                ClaimsPrincipal userPrincipal = _httpContextAccessor.HttpContext.User;
+
                 var identityUser = await _userManager.GetUserAsync(userPrincipal);
 
                 if (identityUser is not null)

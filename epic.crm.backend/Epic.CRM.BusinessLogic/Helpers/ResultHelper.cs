@@ -16,16 +16,17 @@ namespace Epic.CRM.BusinessLogic.Helpers
 
     public class DataResult<T> : Result where T : class
     {
-        public T Data { get; set; }
+        public T? Data { get; set; }
     }
 
-    public class PageResult<T> : DataResult<T> where T: class
+    public class PageResult<T> : DataResult<T> where T: class, IEnumerable<object>
     {
         public PageResult(QueryParams queryParams)
         {
             QueryParams = queryParams;
         }
         public QueryParams QueryParams { get; set; }
+        public int? ItemCount => Data?.Count();
     }
 
     public enum ResultStatusEnum
