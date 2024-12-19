@@ -79,7 +79,7 @@ namespace Epic.CRM.DataDomain
             modelBuilder.Entity<Work>(entity =>
             {
                 entity.Property(e => e.Name).HasMaxLength(250);
-                entity.Property(e => e.TimeStamp).HasColumnType("datetime");
+                entity.Property(e => e.WorkDateTime).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Address).WithMany(p => p.Work)
                     .HasForeignKey(d => d.AddressId)

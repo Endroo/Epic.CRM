@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Epic.CRM.BusinessLogic.Helpers;
+using Epic.CRM.Common;
+using Epic.CRM.DataDomain.Dtos;
+
+using Microsoft.AspNetCore.Mvc;
+
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +14,17 @@ namespace Epic.CRM.WebApi.Controllers
     [ApiController]
     public class WorkController : ControllerBase
     {
-        // GET: api/<WorkController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[HttpGet]
+        //[ProducesResponseType(typeof(PageResult<IEnumerable<AppUserDto>>), 200)]
+        //public async Task<IActionResult> Get([FromQuery] QueryParams queryParams)
+        //{
+        //    var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    if (string.IsNullOrWhiteSpace(identityUserId))
+        //        return Unauthorized("No logged user");
 
-        // GET api/<WorkController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //    var result = await _customerManager.GetAll(identityUserId, queryParams);
 
-        // POST api/<WorkController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<WorkController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<WorkController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //    return Ok(result);
+        //}
     }
 }

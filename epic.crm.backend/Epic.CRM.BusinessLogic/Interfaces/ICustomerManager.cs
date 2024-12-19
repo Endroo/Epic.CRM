@@ -12,9 +12,9 @@ namespace Epic.CRM.BusinessLogic.Interfaces
 {
     public interface ICustomerManager
     {
-        Task<PageResult<IEnumerable<CustomerDto>>> GetAll(QueryParams queryParams);
-        Task<Result> EditCustomer(int customerId, CustomerRegisterDto dto);
+        Task<PageResult<IEnumerable<CustomerDto>>> GetAll(string identityUserId, QueryParams queryParams);
+        Task<Result> EditCustomer(int customerId, CustomerEditRegisterDto dto);
         Task<Result> DeleteCustomer(int customerId);
-        Task<Result> CreateCustomer(CustomerRegisterDto dto);
+        Task<Result> CreateCustomer(string identityUserId, CustomerEditRegisterDto dto);
     }
 }

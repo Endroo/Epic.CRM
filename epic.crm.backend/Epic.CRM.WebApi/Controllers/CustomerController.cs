@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using System.Security.Claims;
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Epic.CRM.WebApi.Controllers
@@ -28,19 +30,27 @@ namespace Epic.CRM.WebApi.Controllers
         [ProducesResponseType(typeof(PageResult<IEnumerable<AppUserDto>>), 200)]
         public async Task<IActionResult> Get([FromQuery] QueryParams queryParams)
         {
-            var result = await _customerManager.GetAll(queryParams);
+            var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(identityUserId))
+                return Unauthorized("No logged user");
+
+            var result = await _customerManager.GetAll(identityUserId, queryParams);
 
             return Ok(result);
         }
 
-        [HttpPost("register")]
+        [HttpPost("create")]
         [ProducesResponseType(typeof(Result), 200)]
-        public async Task<IActionResult> Register([FromBody] CustomerRegisterDto form)
+        public async Task<IActionResult> Create([FromBody] CustomerEditRegisterDto form)
         {
             if (form is null)
                 return BadRequest();
 
-            var result = await _customerManager.CreateCustomer(form);
+            var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(identityUserId))
+                return Unauthorized("No logged user");
+
+            var result = await _customerManager.CreateCustomer(identityUserId, form);
 
             if (result.ResultStatus == ResultStatusEnum.Fail)
                 return BadRequest(result.Errors);
@@ -49,7 +59,7 @@ namespace Epic.CRM.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int? id, [FromBody] CustomerRegisterDto form)
+        public async Task<IActionResult> Put(int? id, [FromBody] CustomerEditRegisterDto form)
         {
             if (form is null || id is null)
                 return BadRequest();

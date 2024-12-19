@@ -13,7 +13,7 @@ public partial class Work
 
     public int? CustomerId { get; set; }
 
-    public DateTime? TimeStamp { get; set; }
+    public DateTime? WorkDateTime { get; set; }
 
     public string Description { get; set; }
 

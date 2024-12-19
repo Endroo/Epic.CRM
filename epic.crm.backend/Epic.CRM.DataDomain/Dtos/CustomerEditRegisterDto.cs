@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Epic.CRM.DataDomain.Dtos
 {
-    public class CustomerRegisterDto : Dto<Customer>
+    public class CustomerEditRegisterDto : Dto<Customer>
     {
         public int ZipCode { get; set; }
         public string City { get; set; }
@@ -34,6 +34,17 @@ namespace Epic.CRM.DataDomain.Dtos
         public override Dto<Customer> Map(Customer entity)
         {
             throw new NotImplementedException();
+        }
+
+        public override Customer Update(Customer entity)
+        {
+            entity.Name = Name;
+            entity.Email = Email;
+            entity.Address.ZipCode = ZipCode;
+            entity.Address.City = City; 
+            entity.Address.HouseAddress = HouseAddress;
+
+            return entity;
         }
     }
 }

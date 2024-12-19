@@ -1,4 +1,6 @@
-﻿using Epic.CRM.BusinessLogic.Helpers;
+﻿using Azure;
+
+using Epic.CRM.BusinessLogic.Helpers;
 using Epic.CRM.BusinessLogic.Interfaces;
 using Epic.CRM.Common;
 using Epic.CRM.DataDomain.Dtos;
@@ -8,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -56,15 +60,6 @@ namespace Epic.CRM.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("loggedin_user")]
-        [ProducesResponseType(typeof(DataResult<AppUserDto>), 200)]
-        public async Task<IActionResult> GetLoginUser()
-        {
-            var result = await _appUserManager.GetLoggedInUser();
-
-            return Ok(result);
-        }
-
         [HttpPost("register")]
         [ProducesResponseType(typeof(Result), 200)]
         public async Task<IActionResult> Register([FromBody] AppUserRegisterDto form)
@@ -101,12 +96,26 @@ namespace Epic.CRM.WebApi.Controllers
             if (id is null)
                 return BadRequest();
 
-            var result = await _appUserManager.DeleteUser(id.Value);
+            var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(identityUserId))
+                return Unauthorized("No logged user");
 
-            if (result.ResultStatus == ResultStatusEnum.Fail)
-                return BadRequest(result.Errors);
+            var identityUserResult = await _appUserManager.GetByIdentityUserId(identityUserId);
+            if (identityUserResult.ResultStatus == ResultStatusEnum.Success)
+            {
+                if (identityUserResult.Data.AppUserId == id)
+                    return BadRequest("Can not delete logged in user");
 
-            return Ok(result);
+                var result = await _appUserManager.DeleteUser(id.Value);
+
+                if (result.ResultStatus == ResultStatusEnum.Fail)
+                    return BadRequest(result.Errors);
+
+                return Ok(result);
+            }
+            else
+                return BadRequest(identityUserResult.Errors);
+
         }
     }
 }

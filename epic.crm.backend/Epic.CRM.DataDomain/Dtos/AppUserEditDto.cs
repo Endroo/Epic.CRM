@@ -23,5 +23,14 @@ namespace Epic.CRM.DataDomain.Dtos
         {
             throw new NotImplementedException();
         }
+
+        public override AppUser Update(AppUser entity)
+        {
+            entity.Name = Name;
+            entity.IsAdmin = IsAdmin.Value;
+            entity.Profession = Profession;
+
+            return entity;
+        }
     }
 }

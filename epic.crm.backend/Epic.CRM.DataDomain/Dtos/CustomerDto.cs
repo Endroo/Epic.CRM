@@ -46,5 +46,6 @@ namespace Epic.CRM.DataDomain.Dtos
                 AddressLiteral = string.Join(" ", address.ZipCode, address.City, address.HouseAddress),
             };
         }
+
     }
 }

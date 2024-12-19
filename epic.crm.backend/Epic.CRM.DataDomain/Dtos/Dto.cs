@@ -11,5 +11,9 @@ namespace Epic.CRM.DataDomain.Dtos
     {
         public abstract TEntity Map();
         public abstract Dto<TEntity> Map(TEntity entity);
+        public virtual TEntity Update(TEntity entity)
+        {
+            return entity;
+        }
     }
 }

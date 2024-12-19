@@ -12,6 +12,11 @@ namespace Epic.CRM.BusinessLogic.Helpers
     {
         public ResultStatusEnum ResultStatus => Errors.Any() ? ResultStatusEnum.Fail : ResultStatusEnum.Success;
         public List<string> Errors { get; set; } = new();
+
+        public override string ToString()
+        {
+            return $"{ResultStatus}";
+        }
     }
 
     public class DataResult<T> : Result where T : class

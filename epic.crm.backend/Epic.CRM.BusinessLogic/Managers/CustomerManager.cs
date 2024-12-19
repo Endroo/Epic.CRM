@@ -23,16 +23,14 @@ namespace Epic.CRM.BusinessLogic.Managers
     {
         private readonly IAppUserManager _userManager;
         private readonly ICustomerRepository _customerRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CustomerManager(IAppUserManager userManager, IHttpContextAccessor httpContextAccessor, ICustomerRepository customerRepository)
         {
             _userManager = userManager;
-            _httpContextAccessor = httpContextAccessor;
             _customerRepository = customerRepository;
         }
 
-        public async Task<Result> CreateCustomer(CustomerRegisterDto dto)
+        public async Task<Result> CreateCustomer(string identityUserId, CustomerEditRegisterDto dto)
         {
             var result = new Result();
             try
@@ -41,7 +39,7 @@ namespace Epic.CRM.BusinessLogic.Managers
 
                 if (result.ResultStatus == ResultStatusEnum.Success)
                 {
-                    var getLoggedUserResult = await _userManager.GetLoggedInUser();
+                    var getLoggedUserResult = await _userManager.GetByIdentityUserId(identityUserId);
                     if (getLoggedUserResult.ResultStatus == ResultStatusEnum.Fail)
                     {
                         result.Errors = getLoggedUserResult.Errors;
@@ -84,7 +82,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
-        public async Task<Result> EditCustomer(int customerId, CustomerRegisterDto dto)
+        public async Task<Result> EditCustomer(int customerId, CustomerEditRegisterDto dto)
         {
             var result = new Result();
             try
@@ -92,11 +90,7 @@ namespace Epic.CRM.BusinessLogic.Managers
                 var customer = _customerRepository.GetById(customerId);
                 if (customer is not null)
                 {
-                    customer.Email = dto.Email;
-                    customer.Name = dto.Name;
-                    customer.Address.ZipCode = dto.ZipCode;
-                    customer.Address.City = dto.City;
-                    customer.Address.HouseAddress = dto.HouseAddress;
+                    dto.Update(customer);
 
                     _customerRepository.Update(customer);
                 }
@@ -112,12 +106,12 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
-        public async Task<PageResult<IEnumerable<CustomerDto>>> GetAll(QueryParams queryParams)
+        public async Task<PageResult<IEnumerable<CustomerDto>>> GetAll(string identityUserId, QueryParams queryParams)
         {
             var result = new PageResult<IEnumerable<CustomerDto>>(queryParams);
             try
             {
-                var getLoggedUserResult = await _userManager.GetLoggedInUser();
+                var getLoggedUserResult = await _userManager.GetByIdentityUserId(identityUserId);
                 if (getLoggedUserResult.ResultStatus == ResultStatusEnum.Fail)
                 {
                     result.Errors = getLoggedUserResult.Errors;
@@ -139,7 +133,7 @@ namespace Epic.CRM.BusinessLogic.Managers
 
         }
 
-        private Result EditCustomerValidation(CustomerRegisterDto dto)
+        private Result EditCustomerValidation(CustomerEditRegisterDto dto)
         {
             var result = new Result();
             if (dto is null)

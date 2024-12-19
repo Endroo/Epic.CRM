@@ -29,13 +29,11 @@ namespace Epic.CRM.BusinessLogic.Managers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IAppUserRepository _appUserRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AppUserManager(UserManager<IdentityUser> userManager, IAppUserRepository appUserRepository, IHttpContextAccessor httpContextAccessor)
+        public AppUserManager(UserManager<IdentityUser> userManager, IAppUserRepository appUserRepository)
         {
             _userManager = userManager;
             _appUserRepository = appUserRepository;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Result> CreateUser(AppUserRegisterDto dto)
@@ -100,14 +98,6 @@ namespace Epic.CRM.BusinessLogic.Managers
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     var appUser = _appUserRepository.GetById(appUserId, new FindOptions { IsIgnoreAutoIncludes = true });
-                    var identityUser = await _userManager.FindByIdAsync(appUser.AspNetUserId);
-                    var loggedInUser = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
-
-                    if(loggedInUser.Id == identityUser.Id)
-                    {
-                        result.Errors.Add($"Can not delete logged in user.");
-                        return result;
-                    }
 
                     if (appUser is not null)
                         _appUserRepository.Delete(appUser);
@@ -116,6 +106,8 @@ namespace Epic.CRM.BusinessLogic.Managers
                         result.Errors.Add($"No user found");
                         return result;
                     }
+
+                    var identityUser = await _userManager.FindByIdAsync(appUser.AspNetUserId);
 
                     if (identityUser is not null)
                     {
@@ -185,9 +177,11 @@ namespace Epic.CRM.BusinessLogic.Managers
                                 }
                             }
 
-                            appUser.Name = dto.Name;
-                            appUser.Profession = dto.Profession;
-                            appUser.IsAdmin = dto.IsAdmin.Value;
+                            dto.Update(appUser);
+
+                            //appUser.Name = dto.Name;
+                            //appUser.Profession = dto.Profession;
+                            //appUser.IsAdmin = dto.IsAdmin.Value;
 
                             _appUserRepository.Update(appUser);
 
@@ -251,6 +245,32 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
+        /// <summary>
+        /// Get by Identity user id. No include.
+        /// </summary>
+        /// <param name="identityUserId"></param>
+        /// <returns></returns>
+        public async Task<DataResult<AppUserDto>> GetByIdentityUserId(string identityUserId)
+        {
+            var result = new DataResult<AppUserDto>();
+            try
+            {
+                var appUser = _appUserRepository.GetByIdentityId(identityUserId, new FindOptions { IsAsNoTracking = true });
+                if (appUser is not null)
+                {
+                    result.Data = new AppUserDto().Map(appUser);
+                }
+                else
+                    result.Errors.Add($"No user found");
+            }
+            catch (Exception ex)
+            {
+                result.Errors.Add(ex.ToString());
+            }
+
+            return result;
+        }
+
         public async Task<DataResult<AppUserDto>> GetByUserName(string userName)
         {
             var result = new DataResult<AppUserDto>();
@@ -277,33 +297,29 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
-        public async Task<DataResult<AppUserDto>> GetLoggedInUser()
-        {
-            var result = new DataResult<AppUserDto>();
-            try
-            {
-                ClaimsPrincipal userPrincipal = _httpContextAccessor.HttpContext.User;
+        //public async Task<DataResult<AppUserDto>> GetLoggedInUser(string identityUserId)
+        //{
+        //    var result = new DataResult<AppUserDto>();
+        //    try
+        //    {
+        //        if (!string.IsNullOrWhiteSpace(identityUserId))
+        //        {
+        //            var appUser = _appUserRepository.GetByIdentityId(identityUserId, new FindOptions { IsAsNoTracking = true });
+        //            if (appUser is not null)
+        //                result.Data = new AppUserDto().Map(appUser);
+        //            else
+        //                result.Errors.Add($"No user found. Username: {appUser.Email}");
+        //        }
+        //        else
+        //            result.Errors.Add("User is not logged in.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result.Errors.Add(ex.ToString());
+        //    }
 
-                var identityUser = await _userManager.GetUserAsync(userPrincipal);
-
-                if (identityUser is not null)
-                {
-                    var appUser = _appUserRepository.GetByIdentityId(identityUser.Id, new FindOptions { IsAsNoTracking = true });
-                    if (appUser is not null)
-                        result.Data = new AppUserDto().Map(appUser);
-                    else
-                        result.Errors.Add($"No user found. Username: {identityUser.Email}");
-                }
-                else
-                    result.Errors.Add("User is not logged in.");
-            }
-            catch (Exception ex)
-            {
-                result.Errors.Add(ex.ToString());
-            }
-
-            return result;
-        }
+        //    return result;
+        //}
 
         private Result CreateUserValidation(AppUserRegisterDto dto)
         {
