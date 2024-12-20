@@ -179,10 +179,6 @@ namespace Epic.CRM.BusinessLogic.Managers
 
                             dto.Update(appUser);
 
-                            //appUser.Name = dto.Name;
-                            //appUser.Profession = dto.Profession;
-                            //appUser.IsAdmin = dto.IsAdmin.Value;
-
                             _appUserRepository.Update(appUser);
 
                         }

@@ -16,6 +16,8 @@ namespace Epic.CRM.DataDomain.Dtos
 
         public int? CustomerId { get; set; }
 
+        public string CustomerName { get; set; }
+
         public DateTime? WorkDateTime { get; set; }
 
         public string Description { get; set; }
@@ -25,6 +27,8 @@ namespace Epic.CRM.DataDomain.Dtos
         public string AddressLiteral { get; set; }
 
         public int? WorkStatusId { get; set; }
+
+        public string WorkStatus { get; set; }
 
         public int AppUserId { get; set; }
 
@@ -41,7 +45,7 @@ namespace Epic.CRM.DataDomain.Dtos
                 AddressId = AddressId,
                 WorkStatusId = WorkStatusId,
                 AppUserId = AppUserId,
-                CustomerId = CustomerId,
+                CustomerId = CustomerId
             };
         }
 
@@ -60,7 +64,11 @@ namespace Epic.CRM.DataDomain.Dtos
                 CustomerId = entity.CustomerId,
                 WorkStatusId = entity.WorkStatusId,
                 AddressLiteral = string.Join(" ", address.ZipCode, address.City, address.HouseAddress),
+                CustomerName = entity.Customer.Name,
+                WorkStatus = entity.WorkStatus.Name
             };
         }
+
+        
     }
 }

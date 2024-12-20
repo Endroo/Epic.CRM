@@ -55,6 +55,8 @@ builder.Services.AddScoped<IAppUserManager, AppUserManager>();
 builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
 builder.Services.AddScoped<ICustomerManager, CustomerManager>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IWorkManager, WorkManager>();
+builder.Services.AddScoped<IWorkRepository, WorkRepository>();
 
 builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.None; });
 

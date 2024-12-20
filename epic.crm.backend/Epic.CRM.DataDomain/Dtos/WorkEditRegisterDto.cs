@@ -22,9 +22,10 @@ namespace Epic.CRM.DataDomain.Dtos
 
         public int? AddressId { get; set; }
 
-        public AddressDto Address { get; set; }
-
         public int? WorkStatusId { get; set; }
+        public int ZipCode { get; set; }
+        public string City { get; set; }
+        public string HouseAddress { get; set; }
 
         public override Work Map()
         {
@@ -37,13 +38,41 @@ namespace Epic.CRM.DataDomain.Dtos
                 AddressId = AddressId,
                 WorkStatusId = WorkStatusId,
                 CustomerId = CustomerId,
-                Address = AddressId is not null ? Address.Map() : null
+                Address = AddressId is null ? 
+                    new Address 
+                    { 
+                        City = City,
+                        HouseAddress = HouseAddress,
+                        ZipCode = ZipCode
+                    } 
+                    : null
             };
         }
 
         public override Dto<Work> Map(Work entity)
         {
             throw new NotImplementedException();
+        }
+
+        public override Work Update(Work entity)
+        {
+            entity.Name = Name;
+            entity.Price = Price;
+            entity.Description = Description;
+            entity.AddressId = AddressId;
+            entity.WorkStatusId = WorkStatusId;
+            entity.CustomerId = CustomerId;
+            if (AddressId is null)
+            {
+                entity.Address =
+                    new Address
+                    {
+                        City = City,
+                        HouseAddress = HouseAddress,
+                        ZipCode = ZipCode
+                    };
+            }
+            return entity;
         }
     }
 }

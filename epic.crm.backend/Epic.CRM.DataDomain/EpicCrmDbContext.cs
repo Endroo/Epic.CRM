@@ -97,6 +97,9 @@ namespace Epic.CRM.DataDomain
                 entity.HasOne(d => d.WorkStatus).WithMany(p => p.Work)
                     .HasForeignKey(d => d.WorkStatusId)
                     .HasConstraintName("FK_Work_WorkStatus");
+                entity.Navigation(u => u.Customer).AutoInclude();
+                entity.Navigation(u => u.Address).AutoInclude();
+                entity.Navigation(u => u.WorkStatus).AutoInclude();
             });
 
             modelBuilder.Entity<WorkStatus>(entity =>

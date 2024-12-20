@@ -27,7 +27,7 @@ namespace Epic.CRM.WebApi.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(PageResult<IEnumerable<AppUserDto>>), 200)]
+        [ProducesResponseType(typeof(PageResult<IEnumerable<CustomerDto>>), 200)]
         public async Task<IActionResult> Get([FromQuery] QueryParams queryParams)
         {
             var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -59,6 +59,7 @@ namespace Epic.CRM.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(Result), 200)]
         public async Task<IActionResult> Put(int? id, [FromBody] CustomerEditRegisterDto form)
         {
             if (form is null || id is null)
@@ -73,6 +74,7 @@ namespace Epic.CRM.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(Result), 200)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id is null)

@@ -15,27 +15,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace Epic.CRM.BusinessLogic.Managers
 {
-    public class CustomerManager : ICustomerManager
+    public class WorkManager : IWorkManager
     {
         private readonly IAppUserManager _userManager;
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IWorkRepository _workRepository;
 
-        public CustomerManager(IAppUserManager userManager, ICustomerRepository customerRepository)
+        public WorkManager(IAppUserManager userManager, IWorkRepository workRepository)
         {
             _userManager = userManager;
-            _customerRepository = customerRepository;
+            _workRepository = workRepository;
         }
 
-        public async Task<Result> CreateCustomer(string identityUserId, CustomerEditRegisterDto dto)
+        public async Task<Result> CreateWork(string identityUserId, WorkEditRegisterDto dto)
         {
             var result = new Result();
             try
             {
-                result = EditCustomerValidation(dto);
+                result = EditWorkValidation(dto);
 
                 if (result.ResultStatus == ResultStatusEnum.Success)
                 {
@@ -48,9 +47,9 @@ namespace Epic.CRM.BusinessLogic.Managers
 
                     var loggedinUser = getLoggedUserResult.Data;
 
-                    Customer customer = dto.Map();
-                    customer.AppUserId = loggedinUser.AppUserId;
-                    await _customerRepository.AddAsync(customer);
+                    Work work = dto.Map();
+                    work.AppUserId = loggedinUser.AppUserId;
+                    await _workRepository.AddAsync(work);
                 }
 
                 return result;
@@ -63,16 +62,16 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
-        public async Task<Result> DeleteCustomer(int customerId)
+        public async Task<Result> DeleteWork(int workId)
         {
             var result = new Result();
             try
             {
-                var customer = _customerRepository.GetById(customerId, new FindOptions { IsIgnoreAutoIncludes = true });
-                if (customer is not null)
-                    _customerRepository.Delete(customer);
+                var work = _workRepository.GetById(workId, new FindOptions { IsIgnoreAutoIncludes = true });
+                if (work is not null)
+                    _workRepository.Delete(work);
                 else
-                    result.Errors.Add("No customer found");
+                    result.Errors.Add("No work found");
             }
             catch (Exception ex)
             {
@@ -82,20 +81,20 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
-        public async Task<Result> EditCustomer(int customerId, CustomerEditRegisterDto dto)
+        public async Task<Result> EditWork(int workId, WorkEditRegisterDto dto)
         {
             var result = new Result();
             try
             {
-                var customer = _customerRepository.GetById(customerId);
-                if (customer is not null)
+                var work = _workRepository.GetById(workId);
+                if (work is not null)
                 {
-                    dto.Update(customer);
+                    dto.Update(work);
 
-                    _customerRepository.Update(customer);
+                    _workRepository.Update(work);
                 }
                 else
-                    result.Errors.Add("No customer found");
+                    result.Errors.Add("No work found");
 
             }
             catch (Exception ex)
@@ -106,9 +105,9 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
-        public async Task<PageResult<IEnumerable<CustomerDto>>> GetAll(string identityUserId, QueryParams queryParams)
+        public async Task<PageResult<IEnumerable<WorkDto>>> GetAll(string identityUserId, QueryParams queryParams)
         {
-            var result = new PageResult<IEnumerable<CustomerDto>>(queryParams);
+            var result = new PageResult<IEnumerable<WorkDto>>(queryParams);
             try
             {
                 var getLoggedUserResult = await _userManager.GetByIdentityUserId(identityUserId);
@@ -121,8 +120,8 @@ namespace Epic.CRM.BusinessLogic.Managers
                 queryParams = queryParams ?? new QueryParams();
 
                 var loggedinUser = getLoggedUserResult.Data;
-                var customerList = await _customerRepository.GetAll(loggedinUser.AppUserId, queryParams);
-                result.Data = customerList.Select(x => new CustomerDto().Map(x));
+                var workList = await _workRepository.GetAll(loggedinUser.AppUserId, queryParams);
+                result.Data = workList.Select(x => new WorkDto().Map(x));
             }
             catch (Exception ex)
             {
@@ -132,14 +131,12 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
-        private Result EditCustomerValidation(CustomerEditRegisterDto dto)
+        private Result EditWorkValidation(WorkEditRegisterDto dto)
         {
             var result = new Result();
             if (dto is null)
                 result.Errors.Add("Invalid or missing register form");
 
-            if (string.IsNullOrWhiteSpace(dto.Email))
-                result.Errors.Add("Invalid or missing email");
             if (string.IsNullOrWhiteSpace(dto.Name))
                 result.Errors.Add("Invalid or missing name");
 

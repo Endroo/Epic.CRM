@@ -77,6 +77,7 @@ namespace Epic.CRM.WebApi.Controllers
 
 
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(Result), 200)]
         public async Task<IActionResult> Put(int? id, [FromBody] AppUserEditDto form)
         {
             if (form is null || id is null)
@@ -91,6 +92,7 @@ namespace Epic.CRM.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(Result), 200)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id is null)
