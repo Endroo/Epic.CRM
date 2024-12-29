@@ -11,6 +11,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epic.CRM.DataDomain", "Epic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.CRM.Common", "Epic.CRM.Common\Epic.CRM.Common.csproj", "{A819E4AB-21B4-419F-B2A5-00581D5E473A}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "src", "..\epic.crm.frontend\src\", "{7CBC1116-08C0-4469-8D0D-F22AE73C9957}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_51769"
+		Debug.AspNetCompiler.PhysicalPath = "..\epic.crm.frontend\src\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51769\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_51769"
+		Release.AspNetCompiler.PhysicalPath = "..\epic.crm.frontend\src\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51769\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "51769"
+		SlnRelativePath = "..\epic.crm.frontend\src\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +54,10 @@ Global
 		{A819E4AB-21B4-419F-B2A5-00581D5E473A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A819E4AB-21B4-419F-B2A5-00581D5E473A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A819E4AB-21B4-419F-B2A5-00581D5E473A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CBC1116-08C0-4469-8D0D-F22AE73C9957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CBC1116-08C0-4469-8D0D-F22AE73C9957}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CBC1116-08C0-4469-8D0D-F22AE73C9957}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CBC1116-08C0-4469-8D0D-F22AE73C9957}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
