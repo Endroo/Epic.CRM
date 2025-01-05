@@ -1,0 +1,16 @@
+{
+  "language": {
+    "english": "English",
+    "hungarian": "Hungarian"
+  },
+  "common": {
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit"
+  },
+  "login": {
+    "username": "Username",
+    "password": "Password",
+    "login": "Login"
+  }
+}

@@ -1,0 +1,19 @@
+<button mat-icon-button [mat-menu-trigger-for]="themeMenu">
+    <img *ngIf="selectedLanguage === 'hu'" class="language-image" src="assets/flags/hu.svg">
+    <img *ngIf="selectedLanguage === 'en'" class="language-image" src="assets/flags/en.svg">
+</button>
+
+<mat-menu #themeMenu="matMenu">
+    <button mat-menu-item (click)="useLanguage('hu')">
+        <mat-icon [color]="selectedLanguage === 'hu' ? 'primary' : undefined">
+            {{ selectedLanguage === 'hu' ? 'radio_button_checked' : 'radio_button_unchecked' }}
+        </mat-icon>
+        <span>{{ 'language.hungarian' | translate }}</span>
+    </button>
+    <button mat-menu-item (click)="useLanguage('en')">
+        <mat-icon [color]="selectedLanguage === 'en' ? 'primary' : undefined">
+            {{ selectedLanguage === 'en' ? 'radio_button_checked' : 'radio_button_unchecked' }}
+        </mat-icon>
+        <span>{{ 'language.english' | translate }}</span>
+    </button>
+</mat-menu>

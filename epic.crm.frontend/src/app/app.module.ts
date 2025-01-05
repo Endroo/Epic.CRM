@@ -18,7 +18,7 @@ import { WorkModule } from './work/work.module';
     AppComponent,
     NavMenuComponent,
     LoginComponent,
-    FooterComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

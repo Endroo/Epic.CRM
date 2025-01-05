@@ -1,0 +1,16 @@
+{
+  "language": {
+    "english": "Angol",
+    "hungarian": "Magyar"
+  },
+  "common": {
+    "save": "Mentés",
+    "delete": "Törlés",
+    "edit": "Szerkesztés"
+  },
+  "login": {
+    "username": "Felhasználónév",
+    "password": "Jelszó",
+    "login": "Bejelentkezés"
+  }
+}
