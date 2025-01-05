@@ -4,6 +4,7 @@
     "hungarian": "Magyar"
   },
   "common": {
+    "add": "Hozzáadás",
     "save": "Mentés",
     "delete": "Törlés",
     "edit": "Szerkesztés"
@@ -12,5 +13,31 @@
     "username": "Felhasználónév",
     "password": "Jelszó",
     "login": "Bejelentkezés"
+  },
+  "user": {
+    "title": "Felhasználók",
+    "AppUserId": "ID",
+    "Name": "Név",
+    "Email": "Email",
+    "Profession": "Tevékenységi kör",
+    "WorkCount": "Összes Munkák száma",
+    "CustomerCount": "Összes ügyfél száma"
+  },
+  "customer": {
+    "title": "Ügyfelek",
+    "name": "Név",
+    "email": "Email",
+    "addressLiteral": "Cím"
+  },
+  "work": {
+    "title": "Munkák",
+    "workId": "ID",
+    "workDateTime": "Időpont",
+    "name": "Munka megnevezése",
+    "customerName": "Ügyfél",
+    "description": "Leírás",
+    "addressLiteral": "Cím",
+    "workStatus": "Státusz",
+    "price": "Ár"
   }
 }

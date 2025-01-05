@@ -1,1 +1,27 @@
-<p>customers works!</p>
+<h1>{{'customer.title' | translate}}</h1>
+<div>
+  <button class="mb-3" (click)="add()" color="primary" mat-raised-button>{{'common.add' | translate}}</button>
+  <button class="ms-2 mb-1" (click)="edit()" color="accent" mat-raised-button>{{'common.edit' | translate}}</button>
+  <button class="ms-2 mb-1" (click)="delete()" color="warn" mat-raised-button>{{'common.delete' | translate}}</button>
+</div>
+<div class="mt-2">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="Name">
+      <th mat-header-cell *matHeaderCellDef>{{'customer.name' | translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Email">
+      <th mat-header-cell *matHeaderCellDef>{{'customer.email' | translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.Email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="AddressLiteral">
+      <th mat-header-cell *matHeaderCellDef>{{'customer.addressLiteral' | translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.AddressLiteral}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
+  </table>
+</div>

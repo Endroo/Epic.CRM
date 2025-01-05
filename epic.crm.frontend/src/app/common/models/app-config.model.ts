@@ -1,5 +1,5 @@
 export interface IAppConfig {
-  data: {
+  epicCRM: {
     appName: string;
     apiBaseUrl: string;
   };

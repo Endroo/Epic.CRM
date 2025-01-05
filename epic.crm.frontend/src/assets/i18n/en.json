@@ -4,6 +4,7 @@
     "hungarian": "Hungarian"
   },
   "common": {
+    "add": "Add",
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit"
@@ -12,5 +13,31 @@
     "username": "Username",
     "password": "Password",
     "login": "Login"
+  },
+  "user": {
+    "title": "Users",
+    "AppUserId": "ID",
+    "Name": "Name",
+    "Email": "Email",
+    "Profession": "Profession",
+    "WorkCount": "Work Count",
+    "CustomerCount": "Customer Count"
+  },
+  "customer": {
+    "title": "Customers",
+    "name": "Name",
+    "email": "Email",
+    "addressLiteral": "Address"
+  },
+  "work": {
+    "title": "Works",
+    "workId": "ID",
+    "workDateTime": "Work time",
+    "name": "Name",
+    "customerName": "Customer name",
+    "description": "Description",
+    "addressLiteral": "Address",
+    "workStatus": "Status",
+    "price": "Price"
   }
 }

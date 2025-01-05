@@ -1,6 +1,6 @@
 {
   "epicCRM": {
-    "appName": "",
-    "apiBaseUrl": ""
+    "appName": "EPIC CRM",
+    "apiBaseUrl": "https://localhost:7190/"
   }
 }

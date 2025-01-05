@@ -23,6 +23,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var policyName = "defaultCorsPolicy";
+var angularHost = builder.Configuration.GetValue<string>("AngularHost");
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(policyName, builder =>
+    {
+        builder.WithOrigins(angularHost) // the Angular app url
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .WithExposedHeaders("Content-Disposition");
+    });
+});
+
+
 var connectionString = builder.Configuration.GetConnectionString("EpicCrmConnection");
 builder.Services.AddDbContext<EpicCrmDbContext>(x => x.UseSqlServer(connectionString));
 
@@ -67,9 +83,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
-
+app.UseCors(policyName);
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

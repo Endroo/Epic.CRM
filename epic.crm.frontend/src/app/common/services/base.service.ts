@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, filter } from 'rxjs';
+import { PageResult } from '../models/result.model';
 
 @Injectable()
 export abstract class BaseService {
@@ -10,7 +11,7 @@ export abstract class BaseService {
   ) { }
 
   abstract getData<ApiResult>(pageIndex: number, pageSize: number, sortColumn: string, sortOrder: string, filter: any)
-    : Observable<ApiResult>;
+    : Observable<PageResult<any[]>>;
 
   protected setPageParams(params: HttpParams, pageIndex: number, pageSize: number): HttpParams {
     if (pageIndex) {
@@ -31,7 +32,7 @@ export abstract class BaseService {
     return params;
   }
 
-  protected setFilterParams(params: HttpParams, filter: any): HttpParams{
+  protected setFilterParams(params: HttpParams, filter: any): HttpParams {
     if (!filter) {
       return new HttpParams();
     }

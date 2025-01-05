@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -39,6 +39,7 @@ import { MaterialModule } from './material.module';
       deps: [AppConfig],
       multi: true
     },
+    DatePipe
   ]
 })
 export class SharedModule { }

@@ -1,1 +1,42 @@
-<h1>Users</h1>
+<h1>{{'user.title' | translate}}</h1>
+<div>
+  <button class="mb-1" (click)="add()" color="primary" mat-raised-button>{{'common.add' | translate}}</button>
+  <button class="ms-2 mb-1" (click)="edit()" color="accent" mat-raised-button>{{'common.edit' | translate}}</button>
+  <button class="ms-2 mb-1" (click)="delete()" color="warn" mat-raised-button>{{'common.delete' | translate}}</button>
+</div>
+<div class="mt-2">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="AppUserId">
+      <th mat-header-cell *matHeaderCellDef>{{'user.AppUserId' | translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.AppUserId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Name">
+      <th mat-header-cell *matHeaderCellDef>{{'user.Name' | translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Email">
+      <th mat-header-cell *matHeaderCellDef>{{'user.Email' | translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.Email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Profession">
+      <th mat-header-cell *matHeaderCellDef>{{'user.Profession' | translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.Profession}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="WorkCount">
+      <th mat-header-cell *matHeaderCellDef>{{'user.WorkCount' | translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.WorkCount}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="CustomerCount">
+      <th mat-header-cell *matHeaderCellDef>{{'user.CustomerCount' | translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.CustomerCount}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
+  </table>
+</div>

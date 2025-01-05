@@ -33,7 +33,7 @@ export class LoginService {
   }
 
   login(username: string, password: string): Observable<LoginDto | null> {
-    const url = `${AppConfig.settings.data.apiBaseUrl}api/security/login`;
+    const url = `${AppConfig.settings.epicCRM.apiBaseUrl}api/security/login`;
     return this.http.post<LoginDto>(url, {
       username,
       password
@@ -51,7 +51,7 @@ export class LoginService {
   }
 
   logout(): Observable<any> {
-    const url = `${AppConfig.settings.data.apiBaseUrl}api/security/logout`;
+    const url = `${AppConfig.settings.epicCRM.apiBaseUrl}api/security/logout`;
     return this.http.post<boolean>(url, {}, httpOptions).pipe(
       map((result: boolean) => {
         this.cookieServie.setUsername(undefined);
