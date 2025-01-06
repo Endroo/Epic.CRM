@@ -18,7 +18,7 @@ import { UserService } from './user.service';
 })
 export class UserComponent extends BaseComponent implements OnInit {
   displayedColumns: string[] = [
-    'AppUserId',
+    'id',
     'Name',
     'Email',
     'Profession',
