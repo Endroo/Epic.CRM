@@ -7,7 +7,7 @@ import { BaseService } from '../common/services/base.service';
 import { Customer } from '../customers/customers.model';
 import { PageResult, Result } from '../common/models/result.model';
 import { WorkDto, WorkEditRegisterDto } from './work.model';
- 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +18,6 @@ export class WorkService extends BaseService {
   ) {
     super(http);
   }
-
 
   getData<ApiResult>(pageIndex: number, pageSize: number, sortColumn: string, sortOrder: string, filter: any, skipLoading: boolean = false)
     : Observable<PageResult<WorkDto[]>> {
@@ -35,10 +34,11 @@ export class WorkService extends BaseService {
     return this.http.post<Result>(url, form);
   }
 
-  put(id: number): Observable<Result> {
+  put(id: number, form: WorkDto): Observable<Result> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer";
     let params = new HttpParams();
     params = params.set('id', id);
+    params = params.set('form', JSON.stringify(form));
     return this.http.put<Result>(url, { params });
   }
 

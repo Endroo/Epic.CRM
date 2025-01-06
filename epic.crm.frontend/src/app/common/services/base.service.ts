@@ -5,7 +5,6 @@ import { PageResult } from '../models/result.model';
 
 @Injectable()
 export abstract class BaseService {
-
   constructor(
     protected http: HttpClient
   ) { }

@@ -7,10 +7,15 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LanguageSelectorComponent } from './common/components/language-selector/language-selector.component';
 import { AppConfig } from './common/services/app-config.service';
 import { MaterialModule } from './material.module';
+import { ConfirmationDialogComponent } from './common/components/confirmation-dialog/confirmation-dialog.component';
+import { EnumToArrayPipe } from './common/pipes/enum-to-array-pipe';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
-    LanguageSelectorComponent
+    LanguageSelectorComponent,
+    ConfirmationDialogComponent,
+    EnumToArrayPipe
   ],
   imports: [
     MaterialModule,
@@ -24,13 +29,19 @@ import { MaterialModule } from './material.module';
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    ToastrModule.forRoot({
+      closeButton: true
+    }),
   ],
   exports: [
     MaterialModule,
     ReactiveFormsModule,
     TranslateModule,
-    LanguageSelectorComponent
+    LanguageSelectorComponent,
+    ConfirmationDialogComponent,
+    EnumToArrayPipe,
+    ToastrModule
   ],
   providers: [
     {
@@ -39,7 +50,9 @@ import { MaterialModule } from './material.module';
       deps: [AppConfig],
       multi: true
     },
-    DatePipe
+    DatePipe,
+    EnumToArrayPipe,
+    ToastrService
   ]
 })
 export class SharedModule { }

@@ -14,7 +14,7 @@ export class Work {
   address!: Address;
   appUser!: AppUser;
   customer!: Customer;
-  workStatus!: WorkStatus;
+  workStatus!: WorkDto;
 }
 
 export class WorkDto extends Work {
@@ -22,7 +22,7 @@ export class WorkDto extends Work {
   addressLiteral!: string;
 }
 
-export class WorkStatus {
+export class WorkStatusDto {
   workStatusId!: number;
   name!: string;
   work!: Work[];
@@ -32,4 +32,11 @@ export class WorkEditRegisterDto extends Work {
   zipCode!: number;
   city!: string;
   houseAddress!: string;
+}
+
+export enum WorkStatusEnum {
+  Planned = 1,
+  InProgress = 2,
+  Done = 3,
+  Deleted = 4
 }

@@ -1,0 +1,61 @@
+<h1 mat-dialog-title *ngIf="!selectedRow">{{ 'common.add' | translate }}</h1>
+<h1 mat-dialog-title *ngIf="selectedRow">{{ 'common.edit' | translate }}</h1>
+<mat-dialog-content>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form">
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'customer.name' | translate }}</mat-label>
+        <input matInput formControlName="name" required type="text" maxlength="200">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['name'].hasError('required')">
+          <span [innerHTML]="'validation.required' | translate"></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'customer.email' | translate }}</mat-label>
+        <input matInput formControlName="email" required type="email">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['email'].hasError('required')">
+          <span [innerHTML]="'validation.required' | translate"></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <strong>{{'customer.addressInformation' | translate }}</strong>
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'customer.zip' | translate }}</mat-label>
+        <input matInput formControlName="zipCode" required type="text">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['zipCode'].hasError('required')">
+          <span [innerHTML]="'validation.required' | translate"></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'customer.city' | translate }}</mat-label>
+        <input matInput formControlName="city" required type="text">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['city'].hasError('required')">
+          <span [innerHTML]="'validation.required' | translate"></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'customer.houseAddress' | translate }}</mat-label>
+        <input matInput formControlName="houseAddress" required type="text">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['houseAddress'].hasError('required')">
+          <span [innerHTML]="'validation.required' | translate"></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="mt-3" align="end">
+  <button mat-raised-button color="primary" [disabled]="formGroup.invalid || formGroup.pristine" (click)="onSubmit()">
+    {{ 'common.save' | translate }}
+  </button>
+  <button class="mr-1" mat-raised-button mat-dialog-close>{{ 'common.cancel' | translate }}</button>
+</mat-dialog-actions>

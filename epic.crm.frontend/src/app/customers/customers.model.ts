@@ -22,7 +22,6 @@ export class CustomerEditRegisterDto extends Customer {
   houseAddress!: string;
 }
 
-
 export class Address {
   addressId!: number;
   zipCode!: number | null;

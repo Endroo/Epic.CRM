@@ -3,7 +3,6 @@ export class Result {
   errors!: string[];
 }
 
-
 export class DataResult<T> extends Result {
   data!: T | null;
 }

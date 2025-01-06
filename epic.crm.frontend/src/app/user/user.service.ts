@@ -18,7 +18,6 @@ export class UserService extends BaseService {
     super(http);
   }
 
-
   getData<ApiResult>(pageIndex: number, pageSize: number, sortColumn: string, sortOrder: string, filter: any, skipLoading: boolean = false)
     : Observable<PageResult<AppUserDto[]>> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + 'api/user';
@@ -28,7 +27,6 @@ export class UserService extends BaseService {
     params = this.setFilterParams(params, filter);
     return this.http.get<PageResult<AppUserDto[]>>(url, { params, headers: { skipLoading: skipLoading.toString() } });
   }
-
 
   getById(id: number): Observable<DataResult<AppUserDto[]>> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user";
@@ -44,16 +42,16 @@ export class UserService extends BaseService {
     return this.http.get<DataResult<AppUserDto[]>>(url, { params });
   }
 
-
   post(form: AppUserDto): Observable<Result> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user/register";
     return this.http.post<Result>(url, form);
   }
 
-  put(id: number): Observable<Result> {
+  put(id: number, form: AppUserDto): Observable<Result> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user";
     let params = new HttpParams();
     params = params.set('id', id);
+    params = params.set('form', JSON.stringify(form));
     return this.http.put<Result>(url, { params });
   }
 

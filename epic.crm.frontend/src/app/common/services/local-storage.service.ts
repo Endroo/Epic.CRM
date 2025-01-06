@@ -15,5 +15,4 @@ export class LocalStorageService {
   public setLanguage(value: string) {
     localStorage.setItem(this.LANGUAGE, value)
   }
-
 }

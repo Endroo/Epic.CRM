@@ -1,4 +1,7 @@
 {
+  "validation": {
+    "required": "Field is required"
+  },
   "language": {
     "english": "English",
     "hungarian": "Hungarian"
@@ -7,7 +10,16 @@
     "add": "Add",
     "save": "Save",
     "delete": "Delete",
-    "edit": "Edit"
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "addSuccessful": "Save successful",
+    "addFailed": "Save failed",
+    "editSuccessful": "Edit successful",
+    "editFailed": "Edit failed",
+    "deleteSuccesful": "Delete successful",
+    "deleteFailed": "Delete failed",
+    "deleteQuestion": "Do you want to delete selected record?"
   },
   "login": {
     "username": "Username",
@@ -16,18 +28,23 @@
   },
   "user": {
     "title": "Users",
-    "AppUserId": "ID",
-    "Name": "Name",
-    "Email": "Email",
-    "Profession": "Profession",
-    "WorkCount": "Work Count",
-    "CustomerCount": "Customer Count"
+    "appUserId": "ID",
+    "name": "Name",
+    "email": "Email",
+    "profession": "Profession",
+    "workCount": "Work Count",
+    "customerCount": "Customer Count",
+    "isAdmin": "Is admin"
   },
   "customer": {
     "title": "Customers",
     "name": "Name",
     "email": "Email",
-    "addressLiteral": "Address"
+    "addressLiteral": "Address",
+    "zip": "ZIP",
+    "city": "City",
+    "houseAddress": "House address",
+    "addressInformation": "Address information"
   },
   "work": {
     "title": "Works",

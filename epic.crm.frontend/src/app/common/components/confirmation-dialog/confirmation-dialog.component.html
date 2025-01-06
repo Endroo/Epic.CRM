@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>
+  {{ 'common.confirmation' | translate }}
+</h1>
+<div mat-dialog-content [innerHtml]="message">
+</div>
+<div class="mt-3" mat-dialog-actions align="end">
+  <button class="mr-1" mat-raised-button mat-dialog-close>{{ 'common.cancel' | translate }}</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="true">{{ 'common.ok' | translate }}</button>
+</div>

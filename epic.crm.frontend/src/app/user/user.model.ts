@@ -12,7 +12,6 @@ export class AppUser {
   work!: Work[];
 }
 
-
 export class AppUserDto extends AppUser {
   workCount!: number;
   customerCount!: number;

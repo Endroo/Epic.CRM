@@ -1,0 +1,96 @@
+<h1 mat-dialog-title *ngIf="!selectedRow">{{ 'common.add' | translate }}</h1>
+<h1 mat-dialog-title *ngIf="selectedRow">{{ 'common.edit' | translate }}</h1>
+<mat-dialog-content>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form">
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{'work.workDateTime' | translate}}</mat-label>
+        <input required matInput [matDatepicker]="date" formControlName="workDateTime"
+               placeholder="{{'work.workDateTime' | translate}}">
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+      </mat-form-field>
+      <mat-error class=" p-0 m-0 smaller-text" *ngIf="formGroup.controls['workDateTime'].hasError('required')">
+        <span [innerHTML]="'validation.required' | translate"></span>
+      </mat-error>
+    </div>
+
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'work.name' | translate }}</mat-label>
+        <input matInput formControlName="name" required type="text" maxlength="200">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['name'].hasError('required')">
+          <span [innerHTML]="'validation.required' | translate"></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'work.customerName' | translate }}</mat-label>
+        <mat-select formControlName="customer">
+          <mat-option *ngFor="let customer of customers" [value]="customer.customerId">
+            {{customer.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error class="smaller-text" *ngIf="formGroup.controls['customer'].hasError('required')">
+        <span [innerHTML]="'validation.required' | translate"></span>
+      </mat-error>
+    </div>
+
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'work.description' | translate }}</mat-label>
+        <input matInput formControlName="description" required type="text">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['description'].hasError('required')">
+          <span [innerHTML]="'validation.required' | translate"></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'work.addressLiteral' | translate }}</mat-label>
+        <mat-select formControlName="address">
+          <mat-option *ngFor="let address of addresses" [value]="address.addressId">
+            {{address.zipCode}}  {{address.city}}  {{address.houseAddress}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error class="smaller-text" *ngIf="formGroup.controls['address'].hasError('required')">
+        <span [innerHTML]="'validation.required' | translate"></span>
+      </mat-error>
+    </div>
+
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'work.workStatus' | translate }}</mat-label>
+        <mat-select required formControlName="workStatus">
+          <mat-option *ngFor="let wStatus of WorkStatuses | enumToArray" [value]="wStatus.index">
+            {{ 'WorkStatusEnum.' + wStatus.index | translate }}
+          </mat-option>
+        </mat-select>
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['workStatus'].hasError('required')">
+          <span [innerHTML]="'validation.required' | translate"></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="mb-2">
+      <mat-form-field>
+        <mat-label>{{ 'work.price' | translate }}</mat-label>
+        <input matInput formControlName="price" required type="number">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['price'].hasError('required')">
+          <span [innerHTML]="'validation.required' | translate"></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="mt-3" align="end">
+  <button mat-raised-button color="primary" [disabled]="formGroup.invalid || formGroup.pristine" (click)="onSubmit()">
+    {{ 'common.save' | translate }}
+  </button>
+  <button class="mr-1" mat-raised-button mat-dialog-close>{{ 'common.cancel' | translate }}</button>
+</mat-dialog-actions>
