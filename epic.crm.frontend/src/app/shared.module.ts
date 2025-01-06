@@ -41,7 +41,8 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
     LanguageSelectorComponent,
     ConfirmationDialogComponent,
     EnumToArrayPipe,
-    ToastrModule
+    ToastrModule,
+    FormsModule
   ],
   providers: [
     {

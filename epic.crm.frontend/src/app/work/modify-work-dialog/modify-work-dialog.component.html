@@ -68,7 +68,7 @@
         <mat-label>{{ 'work.workStatus' | translate }}</mat-label>
         <mat-select required formControlName="workStatus">
           <mat-option *ngFor="let wStatus of WorkStatuses | enumToArray" [value]="wStatus.index">
-            {{ 'WorkStatusEnum.' + wStatus.index | translate }}
+            {{ 'workStatusEnum.' + wStatus.index | translate }}
           </mat-option>
         </mat-select>
         <mat-error class="smaller-text" *ngIf="formGroup.controls['workStatus'].hasError('required')">

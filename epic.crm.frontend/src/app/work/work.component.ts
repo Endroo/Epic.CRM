@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
+import { BaseComponent } from '../common/components/base.component';
 import { ConfirmationDialogComponent } from '../common/components/confirmation-dialog/confirmation-dialog.component';
 import { PopupType } from '../common/models/popup.model';
 import { PageResult, Result, ResultStatusEnum } from '../common/models/result.model';
@@ -15,7 +16,7 @@ import { WorkService } from './work.service';
   templateUrl: './work.component.html',
   styleUrls: ['./work.component.scss']
 })
-export class WorkComponent {
+export class WorkComponent extends BaseComponent {
   displayedColumns: string[] = [
     'WorkId',
     'WorkDateTime',
@@ -30,23 +31,35 @@ export class WorkComponent {
   dataSource: MatTableDataSource<WorkDto> = new MatTableDataSource<WorkDto>();
   selectedDataRow?: WorkDto;
 
+
   constructor(
     private service: WorkService,
     private popupService: PopupService,
     private translateService: TranslateService,
     private dialog: MatDialog
   ) {
+    super();
   }
   ngOnInit(): void {
-    this.getData();
+    this.getData(false);
   }
 
-  getData() {
-    this.service.getData(0, 0, '', '', null, true).subscribe((result: PageResult<WorkDto[]>) => {
-      if (result.data) {
-        this.dataSource.data = result.data;
-      }
-    });
+  getData(skipLoading: boolean) {
+      this.service.getData(
+        this.paginator!?.pageIndex,
+        this.paginator!?.pageSize,
+        this.sort!?.active,
+        this.sort!?.direction,
+        this.filter,
+        skipLoading
+      ).subscribe((result: PageResult<WorkDto[]>) => {
+        if (result.data) {
+          this.paginator!.length = result.itemCount;
+          this.paginator!.pageIndex = result.queryParams.pageIndex;
+          this.paginator!.pageSize = result.queryParams.pageSize;
+          this.dataSource.data = result.data;
+        }
+      });
   }
 
   selectRow(selectedRow: WorkDto) {
@@ -68,6 +81,7 @@ export class WorkComponent {
         this.service.post(filledData).subscribe((result: Result) => {
           if (result.resultStatus === ResultStatusEnum.Success) {
             this.popupService.showPopup('common.addSuccessful', PopupType.Success);
+            this.getData(false);
           } else {
             this.popupService.showPopup('common.addFailed', PopupType.Error);
           }
@@ -89,6 +103,7 @@ export class WorkComponent {
           this.service.put(filledData.workId, filledData).subscribe((result: Result) => {
             if (result.resultStatus === ResultStatusEnum.Success) {
               this.popupService.showPopup('common.editSuccessful', PopupType.Success);
+              this.getData(false);
             } else {
               this.popupService.showPopup('common.editFailed', PopupType.Error);
             }
@@ -123,6 +138,7 @@ export class WorkComponent {
         this.service.delete(this.selectedDataRow!.appUserId).subscribe((deleteResult: Result) => {
           if (deleteResult.resultStatus == ResultStatusEnum.Success) {
             this.popupService.showPopup('common.deleteSuccessful', PopupType.Success);
+            this.getData(false);
           } else {
             this.popupService.showPopup('common.deleteFailed', PopupType.Error);
           }

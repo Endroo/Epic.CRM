@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../common/services/app-config.service';
 import { BaseService } from '../common/services/base.service';
-import { AppUserDto } from './user.model';
+import { AppUserDto, AppUserRegisterDto } from './user.model';
 import { DataResult, PageResult, Result } from '../common/models/result.model';
 
 @Injectable({
@@ -42,12 +42,12 @@ export class UserService extends BaseService {
     return this.http.get<DataResult<AppUserDto[]>>(url, { params });
   }
 
-  post(form: AppUserDto): Observable<Result> {
+  post(form: AppUserRegisterDto): Observable<Result> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user/register";
     return this.http.post<Result>(url, form);
   }
 
-  put(id: number, form: AppUserDto): Observable<Result> {
+  put(id: number, form: AppUserRegisterDto): Observable<Result> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user";
     let params = new HttpParams();
     params = params.set('id', id);

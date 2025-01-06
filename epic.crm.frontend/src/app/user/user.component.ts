@@ -1,28 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { PageResult, Result, ResultStatusEnum } from '../common/models/result.model';
-import { AppUserDto } from './user.model';
-import { UserService } from './user.service';
-import { ModifyUserDialogComponent } from './modify-user-dialog/modify-dialog.component';
-import { PopupService } from '../common/services/popup.service';
-import { PopupType } from '../common/models/popup.model';
-import { ConfirmationDialogComponent } from '../common/components/confirmation-dialog/confirmation-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { BaseComponent } from '../common/components/base.component';
+import { ConfirmationDialogComponent } from '../common/components/confirmation-dialog/confirmation-dialog.component';
+import { PopupType } from '../common/models/popup.model';
+import { PageResult, Result, ResultStatusEnum } from '../common/models/result.model';
+import { PopupService } from '../common/services/popup.service';
+import { ModifyUserDialogComponent } from './modify-user-dialog/modify-dialog.component';
+import { AppUserDto, AppUserRegisterDto } from './user.model';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit {
+export class UserComponent extends BaseComponent implements OnInit {
   displayedColumns: string[] = [
     'AppUserId',
     'Name',
     'Email',
     'Profession',
     'WorkCount',
-    'CustomerCount'
+    'CustomerCount',
+    'IsAdmin'
   ];
 
   dataSource: MatTableDataSource<AppUserDto> = new MatTableDataSource<AppUserDto>();
@@ -35,14 +37,25 @@ export class UserComponent implements OnInit {
     private popupService: PopupService,
     private translateService: TranslateService
   ) {
+    super();
   }
   ngOnInit(): void {
-    this.getData();
+    this.getData(false);
   }
 
-  getData() {
-    this.service.getData(0, 0, '', '', null, true).subscribe((result: PageResult<AppUserDto[]>) => {
+  getData(skipLoading: boolean) {
+    this.service.getData(
+      this.paginator!?.pageIndex,
+      this.paginator!?.pageSize,
+      this.sort!?.active,
+      this.sort!?.direction,
+      this.filter,
+      skipLoading
+    ).subscribe((result: PageResult<AppUserDto[]>) => {
       if (result.data) {
+        this.paginator!.length = result.itemCount;
+        this.paginator!.pageIndex = result.queryParams.pageIndex;
+        this.paginator!.pageSize = result.queryParams.pageSize;
         this.dataSource.data = result.data;
       }
     });
@@ -62,11 +75,12 @@ export class UserComponent implements OnInit {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe((filledData: AppUserDto) => {
+    dialogRef.afterClosed().subscribe((filledData: AppUserRegisterDto) => {
       if (filledData) {
         this.service.post(filledData).subscribe((result: Result) => {
           if (result.resultStatus === ResultStatusEnum.Success) {
             this.popupService.showPopup('common.addSuccessful', PopupType.Success);
+            this.getData(false);
           } else {
             this.popupService.showPopup('common.addFailed', PopupType.Error);
           }
@@ -83,11 +97,12 @@ export class UserComponent implements OnInit {
         data: this.selectedDataRow
       });
 
-      dialogRef.afterClosed().subscribe((filledData: AppUserDto) => {
+      dialogRef.afterClosed().subscribe((filledData: AppUserRegisterDto) => {
         if (filledData) {
           this.service.put(filledData.appUserId, filledData).subscribe((result: Result) => {
             if (result.resultStatus === ResultStatusEnum.Success) {
               this.popupService.showPopup('common.editSuccessful', PopupType.Success);
+              this.getData(false);
             } else {
               this.popupService.showPopup('common.editFailed', PopupType.Error);
             }
@@ -121,6 +136,7 @@ export class UserComponent implements OnInit {
         this.service.delete(this.selectedDataRow!.appUserId).subscribe((deleteResult: Result) => {
           if (deleteResult.resultStatus == ResultStatusEnum.Success) {
             this.popupService.showPopup('common.deleteSuccessful', PopupType.Success);
+            this.getData(false);
           } else {
             this.popupService.showPopup('common.deleteFailed', PopupType.Error);
           }

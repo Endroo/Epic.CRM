@@ -19,7 +19,8 @@
     "editFailed": "Szerkesztés sikertelen",
     "deleteSuccesful": "Törlés sikeres",
     "deleteFailed": "Törlés sikertelen",
-    "deleteQuestion": "Törli a kiválasztott rekordot?"
+    "deleteQuestion": "Törli a kiválasztott rekordot?",
+    "search": "Keresés"
   },
   "login": {
     "username": "Felhasználónév",
@@ -30,11 +31,12 @@
     "title": "Felhasználók",
     "appUserId": "ID",
     "name": "Név",
+    "password": "Jelszó",
     "email": "Email",
     "profession": "Tevékenységi kör",
     "workCount": "Összes Munkák száma",
     "customerCount": "Összes ügyfél száma",
-    "isAdmin": "Adminisztrátor ?"
+    "isAdmin": "Admin"
   },
   "customer": {
     "title": "Ügyfelek",
@@ -56,5 +58,11 @@
     "addressLiteral": "Cím",
     "workStatus": "Státusz",
     "price": "Ár"
+  },
+  "workStatusEnum": {
+    "1": "Tervezett",
+    "2": "Folyamatban",
+    "3": "Kész",
+    "4": "Törölve"
   }
 }

@@ -21,7 +21,7 @@ export class WorkService extends BaseService {
 
   getData<ApiResult>(pageIndex: number, pageSize: number, sortColumn: string, sortOrder: string, filter: any, skipLoading: boolean = false)
     : Observable<PageResult<WorkDto[]>> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + 'api/customer';
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + 'api/work';
     let params = new HttpParams();
     params = this.setPageParams(params, pageIndex, pageSize);
     params = this.setSortParams(params, sortColumn, sortOrder);
@@ -30,12 +30,12 @@ export class WorkService extends BaseService {
   }
 
   post(form: WorkEditRegisterDto): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer/create";
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work/create";
     return this.http.post<Result>(url, form);
   }
 
   put(id: number, form: WorkDto): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer";
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work";
     let params = new HttpParams();
     params = params.set('id', id);
     params = params.set('form', JSON.stringify(form));
@@ -43,7 +43,7 @@ export class WorkService extends BaseService {
   }
 
   delete(id: number): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer";
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work";
     let params = new HttpParams();
     params = params.set('id', id);
     return this.http.delete<Result>(url, { params });

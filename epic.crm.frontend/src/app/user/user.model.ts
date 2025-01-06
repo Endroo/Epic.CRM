@@ -16,3 +16,7 @@ export class AppUserDto extends AppUser {
   workCount!: number;
   customerCount!: number;
 }
+
+export class AppUserRegisterDto extends AppUser {
+  password!: string;
+}

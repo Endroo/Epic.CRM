@@ -1,21 +1,22 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { TranslateService } from '@ngx-translate/core';
+import { BaseComponent } from '../common/components/base.component';
+import { ConfirmationDialogComponent } from '../common/components/confirmation-dialog/confirmation-dialog.component';
+import { PopupType } from '../common/models/popup.model';
 import { PageResult, Result, ResultStatusEnum } from '../common/models/result.model';
+import { PopupService } from '../common/services/popup.service';
 import { CustomerDto, CustomerEditRegisterDto } from './customers.model';
 import { CustomerService } from './customers.service';
 import { ModifyCustomerDialogComponent } from './modify-customer-dialog/modify-customer-dialog.component';
-import { PopupType } from '../common/models/popup.model';
-import { PopupService } from '../common/services/popup.service';
-import { TranslateService } from '@ngx-translate/core';
-import { ConfirmationDialogComponent } from '../common/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.scss']
 })
-export class CustomerComponent {
+export class CustomerComponent extends BaseComponent{
   displayedColumns: string[] = [
     'Name',
     'Email',
@@ -33,14 +34,25 @@ export class CustomerComponent {
     private popupService: PopupService,
     private translateService: TranslateService
   ) {
+    super();
   }
   ngOnInit(): void {
-    this.getData();
+    this.getData(false);
   }
 
-  getData() {
-    this.service.getData(0, 0, '', '', null, true).subscribe((result: PageResult<CustomerDto[]>) => {
+  getData(skipLoading: boolean) {
+    this.service.getData(
+      this.paginator!?.pageIndex,
+      this.paginator!?.pageSize,
+      this.sort!?.active,
+      this.sort!?.direction,
+      this.filter,
+      skipLoading
+    ).subscribe((result: PageResult<CustomerDto[]>) => {
       if (result.data) {
+        this.paginator!.length = result.itemCount;
+        this.paginator!.pageIndex = result.queryParams.pageIndex;
+        this.paginator!.pageSize = result.queryParams.pageSize;
         this.dataSource.data = result.data;
       }
     });
@@ -65,6 +77,7 @@ export class CustomerComponent {
         this.service.post(filledData).subscribe((result: Result) => {
           if (result.resultStatus === ResultStatusEnum.Success) {
             this.popupService.showPopup('common.addSuccessful', PopupType.Success);
+            this.getData(false);
           } else {
             this.popupService.showPopup('common.addFailed', PopupType.Error);
           }
@@ -86,6 +99,7 @@ export class CustomerComponent {
           this.service.put(filledData.appUserId, filledData).subscribe((result: Result) => {
             if (result.resultStatus === ResultStatusEnum.Success) {
               this.popupService.showPopup('common.editSuccessful', PopupType.Success);
+              this.getData(false);
             } else {
               this.popupService.showPopup('common.editFailed', PopupType.Error);
             }
@@ -119,6 +133,7 @@ export class CustomerComponent {
         this.service.delete(this.selectedDataRow!.customerId).subscribe((deleteResult: Result) => {
           if (deleteResult.resultStatus == ResultStatusEnum.Success) {
             this.popupService.showPopup('common.deleteSuccessful', PopupType.Success);
+            this.getData(false);
           } else {
             this.popupService.showPopup('common.deleteFailed', PopupType.Error);
           }
