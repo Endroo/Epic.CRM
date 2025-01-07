@@ -132,6 +132,25 @@ namespace Epic.CRM.BusinessLogic.Managers
             return result;
         }
 
+        public async Task<DataResult<CustomerDto>> GetById(int customerId)
+        {
+            var result = new DataResult<CustomerDto>();
+            try
+            {
+                var customer =  _customerRepository.GetById(customerId);
+                if (customer is null)
+                    result.Errors.Add($"No customer found by Id: {customerId}");
+
+                result.Data = new CustomerDto().Map(customer);
+            }
+            catch (Exception ex)
+            {
+                result.Errors.Add(ex.ToString());
+            }
+
+            return result;
+        }
+
         private Result EditCustomerValidation(CustomerEditRegisterDto dto)
         {
             var result = new Result();

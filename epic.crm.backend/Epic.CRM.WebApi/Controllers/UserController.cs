@@ -23,12 +23,10 @@ namespace Epic.CRM.WebApi.Controllers
 
     public class UserController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly IAppUserManager _appUserManager;
 
-        public UserController(UserManager<IdentityUser> userManager, IAppUserManager appUserManager)
+        public UserController(IAppUserManager appUserManager)
         {
-            _userManager = userManager;
             _appUserManager = appUserManager;
         }
 

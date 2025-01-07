@@ -45,4 +45,11 @@ namespace Epic.CRM.DataDomain.Dtos
             };
         }
     }
+
+    public class LoggedInUserDto()
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public bool IsAdmin { get; set; }
+    }
 }

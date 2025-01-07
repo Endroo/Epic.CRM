@@ -20,6 +20,8 @@ namespace Epic.CRM.DataDomain.Dtos
 
         public string AddressLiteral { get; set; }
 
+        public AddressDto Address { get; set; }
+
         public int AppUserId { get; set; }
 
         public override Customer Map()
@@ -36,6 +38,8 @@ namespace Epic.CRM.DataDomain.Dtos
         public override CustomerDto Map(Customer entity)
         {
             var address = entity.Address;
+            var addressDto = new AddressDto().Map(address);
+
             return new CustomerDto
             { 
                 CustomerId = entity.CustomerId,
@@ -43,7 +47,8 @@ namespace Epic.CRM.DataDomain.Dtos
                 Email = entity.Email,
                 AddressId = entity.AddressId,
                 AppUserId = entity.AppUserId,
-                AddressLiteral = string.Join(" ", address.ZipCode, address.City, address.HouseAddress),
+                Address = addressDto,
+                AddressLiteral = addressDto.ToString()
             };
         }
 
