@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageResult, Result } from '../common/models/result.model';
+import { DataResult, PageResult, Result } from '../common/models/result.model';
 import { AppConfig } from '../common/services/app-config.service';
 import { BaseService } from '../common/services/base.service';
 import { CustomerDto, CustomerEditRegisterDto } from './customers.model';
@@ -27,6 +27,12 @@ export class CustomerService extends BaseService {
     params = this.setFilterParams(params, filter);
     return this.http.get<PageResult<CustomerDto[]>>(url, { params, headers: { skipLoading: skipLoading.toString() } });
   }
+
+  get(id: number): Observable<DataResult<CustomerDto>> {
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer/" + id.toString();
+    return this.http.get<DataResult<CustomerDto>>(url);
+  }
+
 
   post(form: CustomerEditRegisterDto): Observable<Result> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer/create";

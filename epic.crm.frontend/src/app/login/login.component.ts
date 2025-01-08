@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LoggedUserDto, LoginDto } from './login.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoginDto } from './login.model';
 import { LoginService } from './login.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,8 +15,7 @@ export class LoginComponent implements OnInit {
   errorMessage!: string;
   constructor(
     private formBuilder: FormBuilder,
-    private accountService: LoginService,
-    private router:Router
+    private accountService: LoginService
    ) {
   }
   ngOnInit(): void {

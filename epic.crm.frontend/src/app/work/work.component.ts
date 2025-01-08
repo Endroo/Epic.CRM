@@ -45,21 +45,21 @@ export class WorkComponent extends BaseComponent {
   }
 
   getData(skipLoading: boolean) {
-      this.service.getData(
-        this.paginator!?.pageIndex,
-        this.paginator!?.pageSize,
-        this.sort!?.active,
-        this.sort!?.direction,
-        this.filter,
-        skipLoading
-      ).subscribe((result: PageResult<WorkDto[]>) => {
-        if (result.data) {
-          this.paginator!.length = result.itemCount;
-          this.paginator!.pageIndex = result.queryParams.pageIndex;
-          this.paginator!.pageSize = result.queryParams.pageSize;
-          this.dataSource.data = result.data;
-        }
-      });
+    this.service.getData(
+      this.paginator!?.pageIndex,
+      this.paginator!?.pageSize,
+      this.sort!?.active,
+      this.sort!?.direction,
+      this.filter,
+      skipLoading
+    ).subscribe((result: PageResult<WorkDto[]>) => {
+      if (result.data) {
+        this.paginator!.length = result.itemCount;
+        this.paginator!.pageIndex = result.queryParams.pageIndex;
+        this.paginator!.pageSize = result.queryParams.pageSize;
+        this.dataSource.data = result.data;
+      }
+    });
   }
 
   selectRow(selectedRow: WorkDto) {
@@ -74,9 +74,11 @@ export class WorkComponent extends BaseComponent {
 
 
   add() {
-    const dialogRef = this.dialog.open(ModifyWorkDialogComponent, {
+    var dialogRef = this.dialog.open(ModifyWorkDialogComponent, {
+      hasBackdrop: true,
       disableClose: true,
-      width:'30%'
+      autoFocus: false,
+      width: '30%'
     });
 
     dialogRef.afterClosed().subscribe((filledData: WorkEditRegisterDto) => {
@@ -95,27 +97,31 @@ export class WorkComponent extends BaseComponent {
   }
 
   edit() {
-    if (this.selectedDataRow) {
-      const dialogRef = this.dialog.open(ModifyWorkDialogComponent, {
-        disableClose: true,
-        data: this.selectedDataRow,
-        width: '30%'
-      });
-
-      dialogRef.afterClosed().subscribe((filledData: WorkDto) => {
-        if (filledData) {
-          this.service.put(filledData.workId, filledData).subscribe((result: Result) => {
-            if (result.resultStatus === ResultStatusEnum.Success) {
-              this.popupService.showPopup('common.editSuccessful', PopupType.Success);
-              this.getData(false);
-            } else {
-              this.popupService.showPopup('common.editFailed', PopupType.Error);
-            }
-            this.selectedDataRow = undefined;
-          });
-        }
-      });
+    if (!this.selectedDataRow) {
+      return;
     }
+    var dialogRef = this.dialog.open(ModifyWorkDialogComponent, {
+      hasBackdrop: true,
+      disableClose: true,
+      autoFocus: false,
+      data: this.selectedDataRow,
+      width: '30%'
+    });
+
+    dialogRef.afterClosed().subscribe((filledData: WorkEditRegisterDto) => {
+      if (filledData) {
+        this.service.put(filledData.workId, filledData).subscribe((result: Result) => {
+          if (result.resultStatus === ResultStatusEnum.Success) {
+            this.popupService.showPopup('common.editSuccessful', PopupType.Success);
+            this.getData(false);
+          } else {
+            this.popupService.showPopup('common.editFailed', PopupType.Error);
+          }
+          this.selectedDataRow = undefined;
+        });
+      }
+    });
+
   }
 
   delete() {

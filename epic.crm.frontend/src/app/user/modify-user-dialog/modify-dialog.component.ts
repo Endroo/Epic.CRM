@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AppUser, AppUserDto, AppUserRegisterDto } from '../user.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AppUserRegisterDto } from '../user.model';
 
 @Component({
   selector: 'app-modify-dialog',
@@ -26,10 +26,10 @@ export class ModifyUserDialogComponent {
 
   initForm() {
     this.formGroup = this.formBuilder.group({
-      name: [this.selectedRow?.name, [Validators.required, Validators.maxLength(200)]],
+      name: [this.selectedRow?.name, [Validators.required, Validators.maxLength(250)]],
       password: [this.selectedRow?.password, Validators.required],
-      email: [this.selectedRow?.email, [Validators.required, Validators.email]],
-      profession: [this.selectedRow?.profession, Validators.required],
+      email: [this.selectedRow?.email, [Validators.required, Validators.email, Validators.maxLength(250)]],
+      profession: [this.selectedRow?.profession, [Validators.required, Validators.maxLength(50)]],
       isAdmin: [this.selectedRow?.isAdmin],
     });
 

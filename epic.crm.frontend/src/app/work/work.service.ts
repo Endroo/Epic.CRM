@@ -2,10 +2,9 @@ import { DatePipe } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PageResult, Result } from '../common/models/result.model';
 import { AppConfig } from '../common/services/app-config.service';
 import { BaseService } from '../common/services/base.service';
-import { Customer } from '../customers/customers.model';
-import { PageResult, Result } from '../common/models/result.model';
 import { WorkDto, WorkEditRegisterDto } from './work.model';
 
 @Injectable({
@@ -34,8 +33,8 @@ export class WorkService extends BaseService {
     return this.http.post<Result>(url, form);
   }
 
-  put(id: number, form: WorkDto): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work" + form.workId;
+  put(id: number, form: WorkEditRegisterDto): Observable<Result> {
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work/" + form.workId;
     return this.http.put<Result>(url, form);
   }
 

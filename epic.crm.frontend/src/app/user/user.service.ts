@@ -2,10 +2,10 @@ import { DatePipe } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DataResult, PageResult, Result } from '../common/models/result.model';
 import { AppConfig } from '../common/services/app-config.service';
 import { BaseService } from '../common/services/base.service';
 import { AppUserDto, AppUserRegisterDto } from './user.model';
-import { DataResult, PageResult, Result } from '../common/models/result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,18 +28,18 @@ export class UserService extends BaseService {
     return this.http.get<PageResult<AppUserDto[]>>(url, { params, headers: { skipLoading: skipLoading.toString() } });
   }
 
-  getById(id: number): Observable<DataResult<AppUserDto[]>> {
+  getById(id: number): Observable<DataResult<AppUserDto>> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user";
     let params = new HttpParams();
     params = params.set('id', id);
-    return this.http.get<DataResult<AppUserDto[]>>(url, { params });
+    return this.http.get<DataResult<AppUserDto>>(url, { params });
   }
 
-  getByUserName(username: string): Observable<DataResult<AppUserDto[]>> {
+  getByUserName(username: string): Observable<DataResult<AppUserDto>> {
     const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user";
     let params = new HttpParams();
     params = params.set('username', username);
-    return this.http.get<DataResult<AppUserDto[]>>(url, { params });
+    return this.http.get<DataResult<AppUserDto>>(url, { params });
   }
 
   post(form: AppUserRegisterDto): Observable<Result> {

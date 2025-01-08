@@ -39,7 +39,13 @@ namespace Epic.CRM.WebApi.Controllers
             return Ok(result);
         }
 
-        
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(DataResult<CustomerDto>), 200)]
+        public async Task<IActionResult> GetById(int? id)
+        {
+            var result = await _customerManager.GetById(id.Value);
+            return Ok(result);
+        }
 
         [HttpPost("create")]
         [ProducesResponseType(typeof(Result), 200)]
@@ -83,6 +89,7 @@ namespace Epic.CRM.WebApi.Controllers
                 return BadRequest();
 
             var result = await _customerManager.DeleteCustomer(id.Value);
+         
 
             if (result.ResultStatus == ResultStatusEnum.Fail)
                 return BadRequest(result.Errors);

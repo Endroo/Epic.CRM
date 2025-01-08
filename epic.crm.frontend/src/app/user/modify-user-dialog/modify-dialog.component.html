@@ -5,7 +5,7 @@
     <div class="mb-2">
       <mat-form-field>
         <mat-label>{{ 'user.name' | translate }}</mat-label>
-        <input matInput formControlName="name" required type="text" maxlength="200">
+        <input matInput formControlName="name" required type="text" maxlength="250">
         <mat-error class="smaller-text" *ngIf="formGroup.controls['name'].hasError('required')">
           <span [innerHTML]="'validation.required' | translate"></span>
         </mat-error>
@@ -25,7 +25,7 @@
     <div class="mb-2">
       <mat-form-field>
         <mat-label>{{ 'user.email' | translate }}</mat-label>
-        <input matInput formControlName="email" required type="email">
+        <input matInput formControlName="email" required type="email" maxlength="250">
         <mat-error class="smaller-text" *ngIf="formGroup.controls['email'].hasError('required')">
           <span [innerHTML]="'validation.required' | translate"></span>
         </mat-error>
@@ -35,7 +35,7 @@
     <div class="mb-2">
       <mat-form-field>
         <mat-label>{{ 'user.profession' | translate }}</mat-label>
-        <input matInput formControlName="profession" required type="text">
+        <input matInput formControlName="profession" required type="text" maxlength="50">
         <mat-error class="smaller-text" *ngIf="formGroup.controls['profession'].hasError('required')">
           <span [innerHTML]="'validation.required' | translate"></span>
         </mat-error>

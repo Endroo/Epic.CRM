@@ -1,7 +1,7 @@
 <h1 mat-dialog-title *ngIf="!selectedRow">{{ 'common.add' | translate }}</h1>
 <h1 mat-dialog-title *ngIf="selectedRow">{{ 'common.edit' | translate }}</h1>
 <mat-dialog-content>
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form">
+  <form [formGroup]="formGroup" class="form">
     <div class="mb-2">
       <mat-form-field>
         <mat-label>{{'work.workDateTime' | translate}}</mat-label>
@@ -18,7 +18,7 @@
     <div class="mb-2">
       <mat-form-field>
         <mat-label>{{ 'work.name' | translate }}</mat-label>
-        <input matInput formControlName="name" required type="text" maxlength="200">
+        <input matInput formControlName="name" required type="text" maxlength="250">
         <mat-error class="smaller-text" *ngIf="formGroup.controls['name'].hasError('required')">
           <span [innerHTML]="'validation.required' | translate"></span>
         </mat-error>
@@ -29,7 +29,7 @@
       <mat-form-field>
         <mat-label>{{ 'work.customerName' | translate }}</mat-label>
         <mat-select formControlName="customer" (selectionChange)="selectCustomer($event)">
-          <mat-option *ngFor="let customer of customers" [value]="customer">
+          <mat-option *ngFor="let customer of customers" [value]="customer.customerId">
             {{customer.name}}
           </mat-option>
         </mat-select>
@@ -39,10 +39,16 @@
       </mat-error>
     </div>
 
-    <div class="mb-2" *ngIf="address">
-      <mat-checkbox (change)="checkDefaultAddress($event)">{{address.zipCode}} {{address.city}} {{address.houseAddress}}</mat-checkbox>
+    <div class="mb-3" *ngIf="address">
+      <div class="row">
+        <div class="col-md-6">
+          <mat-checkbox color="primary" (change)="checkDefaultAddress($event)">{{address.zipCode}} {{address.city}} {{address.houseAddress}}</mat-checkbox>
+        </div>
+        <div class="col-md-6" *ngIf="!selectedDefaultAddress">
+          <button mat-raised-button color="primary" (click)="onAddAddress()">{{'common.add' | translate}}</button>
+        </div>
+      </div>
     </div>
-
 
     <div class="mb-2">
       <mat-form-field>
@@ -53,7 +59,6 @@
         </mat-error>
       </mat-form-field>
     </div>
-
 
     <div class="mb-2">
       <mat-form-field>

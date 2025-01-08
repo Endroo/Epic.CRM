@@ -1,11 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { AppConfig } from '../common/services/app-config.service';
 import { EpicCRMCookieService } from '../common/services/cookie.service';
-import { LoggedUserDto, LoginDto } from './login.model';
 import { LocalStorageService } from '../common/services/local-storage.service';
+import { LoggedUserDto } from './login.model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

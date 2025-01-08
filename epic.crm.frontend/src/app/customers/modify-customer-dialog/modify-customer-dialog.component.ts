@@ -26,8 +26,8 @@ export class ModifyCustomerDialogComponent {
 
   initForm() {
     this.formGroup = this.formBuilder.group({
-      name: [this.selectedRow?.name, [Validators.required, Validators.maxLength(200)]],
-      email: [this.selectedRow?.email, [Validators.required, Validators.email]],
+      name: [this.selectedRow?.name, [Validators.required, Validators.maxLength(250)]],
+      email: [this.selectedRow?.email, [Validators.required, Validators.email, Validators.maxLength(250)]],
       zipCode: [this.selectedRow?.zipCode, Validators.required],
       city: [this.selectedRow?.city, Validators.required],
       houseAddress: [this.selectedRow?.houseAddress, Validators.required],

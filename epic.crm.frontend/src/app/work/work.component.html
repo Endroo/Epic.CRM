@@ -33,7 +33,7 @@
 
     <ng-container matColumnDef="WorkDateTime">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'work.workDateTime' | translate}}</th>
-      <td mat-cell *matCellDef="let element"> {{element.workDateTime | date:'yyyy-MM-dd HH:mm:ss'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.workDateTime | date:'yyyy-MM-dd'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Name">

@@ -6,6 +6,11 @@
     "english": "English",
     "hungarian": "Hungarian"
   },
+  "menu": {
+    "users": "Users",
+    "works": "Works",
+    "customers": "Customers"
+  },
   "common": {
     "add": "Add",
     "save": "Save",
@@ -48,7 +53,7 @@
     "addressLiteral": "Address",
     "zip": "ZIP",
     "city": "City",
-    "houseAddress": "House address",
+    "houseAddress": "Street and house number",
     "addressInformation": "Address information"
   },
   "work": {
@@ -60,7 +65,7 @@
     "description": "Description",
     "addressLiteral": "Address",
     "workStatus": "Status",
-    "price": "Price"
+    "price": "Price (HUF)"
   },
   "workStatusEnum": {
     "1": "Planned",

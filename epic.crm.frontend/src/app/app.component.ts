@@ -19,7 +19,6 @@ export class AppComponent {
     this.setLanguage();
   }
 
-
   setLanguage() {
     const userLanguage = this.localStorageService.getLanguage();
     if (userLanguage) {

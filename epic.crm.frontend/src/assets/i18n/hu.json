@@ -6,6 +6,11 @@
     "english": "Angol",
     "hungarian": "Magyar"
   },
+  "menu": {
+    "users": "Felhasználók",
+    "works": "Munkák",
+    "customers": "Ügyfelek"
+  },
   "common": {
     "add": "Hozzáadás",
     "save": "Mentés",
@@ -48,7 +53,7 @@
     "addressLiteral": "Cím",
     "zip": "Irányítószám",
     "city": "Város",
-    "houseAddress": "Házszám",
+    "houseAddress": "Utca és házszám",
     "addressInformation": "Cím információk"
   },
   "work": {
@@ -60,7 +65,7 @@
     "description": "Leírás",
     "addressLiteral": "Cím",
     "workStatus": "Státusz",
-    "price": "Ár"
+    "price": "Ár (HUF)"
   },
   "workStatusEnum": {
     "1": "Tervezett",
