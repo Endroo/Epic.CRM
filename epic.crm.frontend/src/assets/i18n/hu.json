@@ -13,6 +13,7 @@
     "edit": "Szerkesztés",
     "cancel": "Kilépés",
     "ok": "OK",
+    "logout": "Kijelentkezés",
     "addSuccessful": "Mentés sikeres",
     "addFailed": "Mentés sikertelen",
     "editSuccessful": "Szerkesztés sikeres",
@@ -20,7 +21,9 @@
     "deleteSuccesful": "Törlés sikeres",
     "deleteFailed": "Törlés sikertelen",
     "deleteQuestion": "Törli a kiválasztott rekordot?",
-    "search": "Keresés"
+    "search": "Keresés",
+    "confirmation": "Megerősítés",
+    "loggedIn": "Jelenleg be vagy jelentkezve."
   },
   "login": {
     "username": "Felhasználónév",

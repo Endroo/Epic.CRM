@@ -13,6 +13,7 @@
     "edit": "Edit",
     "cancel": "Cancel",
     "ok": "OK",
+    "logout": "Logout",
     "addSuccessful": "Save successful",
     "addFailed": "Save failed",
     "editSuccessful": "Edit successful",
@@ -20,7 +21,9 @@
     "deleteSuccesful": "Delete successful",
     "deleteFailed": "Delete failed",
     "deleteQuestion": "Do you want to delete selected record?",
-    "search": "Search"
+    "search": "Search",
+    "confirmation": "Confirmation",
+    "loggedIn": "You are currently logged in."
   },
   "login": {
     "username": "Username",

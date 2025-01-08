@@ -28,8 +28,8 @@
     <div class="mb-2">
       <mat-form-field>
         <mat-label>{{ 'work.customerName' | translate }}</mat-label>
-        <mat-select formControlName="customer">
-          <mat-option *ngFor="let customer of customers" [value]="customer.customerId">
+        <mat-select formControlName="customer" (selectionChange)="selectCustomer($event)">
+          <mat-option *ngFor="let customer of customers" [value]="customer">
             {{customer.name}}
           </mat-option>
         </mat-select>
@@ -38,6 +38,11 @@
         <span [innerHTML]="'validation.required' | translate"></span>
       </mat-error>
     </div>
+
+    <div class="mb-2" *ngIf="address">
+      <mat-checkbox (change)="checkDefaultAddress($event)">{{address.zipCode}} {{address.city}} {{address.houseAddress}}</mat-checkbox>
+    </div>
+
 
     <div class="mb-2">
       <mat-form-field>
@@ -49,19 +54,6 @@
       </mat-form-field>
     </div>
 
-    <div class="mb-2">
-      <mat-form-field>
-        <mat-label>{{ 'work.addressLiteral' | translate }}</mat-label>
-        <mat-select formControlName="address">
-          <mat-option *ngFor="let address of addresses" [value]="address.addressId">
-            {{address.zipCode}}  {{address.city}}  {{address.houseAddress}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-error class="smaller-text" *ngIf="formGroup.controls['address'].hasError('required')">
-        <span [innerHTML]="'validation.required' | translate"></span>
-      </mat-error>
-    </div>
 
     <div class="mb-2">
       <mat-form-field>

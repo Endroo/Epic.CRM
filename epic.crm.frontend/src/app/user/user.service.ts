@@ -43,22 +43,17 @@ export class UserService extends BaseService {
   }
 
   post(form: AppUserRegisterDto): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user/register";
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user/register/";
     return this.http.post<Result>(url, form);
   }
 
   put(id: number, form: AppUserRegisterDto): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user";
-    let params = new HttpParams();
-    params = params.set('id', id);
-    params = params.set('form', JSON.stringify(form));
-    return this.http.put<Result>(url, { params });
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user/" + form.appUserId;
+    return this.http.put<Result>(url, form);
   }
 
   delete(id: number): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user";
-    let params = new HttpParams();
-    params = params.set('id', id);
-    return this.http.delete<Result>(url, { params });
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/user/" + id.toString();
+    return this.http.delete<Result>(url);
   }
 }

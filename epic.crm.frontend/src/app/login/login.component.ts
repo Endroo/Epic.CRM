@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginDto } from './login.model';
+import { LoggedUserDto, LoginDto } from './login.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,13 @@ export class LoginComponent implements OnInit {
   errorMessage!: string;
   constructor(
     private formBuilder: FormBuilder,
-    private accountService: LoginService) {
+    private accountService: LoginService,
+    private router:Router
+   ) {
   }
   ngOnInit(): void {
     this.initForm();
+    this.getCurrentUser();
   }
 
   initForm() {
@@ -46,5 +50,17 @@ export class LoginComponent implements OnInit {
         }
       }
     );
+  }
+
+  getCurrentUser() {
+    this.accountService.getCurrentUser().subscribe(result => {
+      if (result) {
+        LoginService.loginUser = result;
+      }
+    });
+  }
+
+  get loginUser() {
+    return LoginService.loginUser;
   }
 }

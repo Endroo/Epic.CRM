@@ -34,17 +34,12 @@ export class CustomerService extends BaseService {
   }
 
   put(id: number, form: CustomerEditRegisterDto): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer";
-    let params = new HttpParams();
-    params = params.set('id', id);
-    params = params.set('form', JSON.stringify(form));
-    return this.http.put<Result>(url, { params });
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer" + form.customerId;
+    return this.http.put<Result>(url, form);
   }
 
   delete(id: number): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer";
-    let params = new HttpParams();
-    params = params.set('id', id);
-    return this.http.delete<Result>(url, { params });
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer/" + id.toString();
+    return this.http.delete<Result>(url);
   }
 }

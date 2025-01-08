@@ -28,9 +28,9 @@ export class ModifyCustomerDialogComponent {
     this.formGroup = this.formBuilder.group({
       name: [this.selectedRow?.name, [Validators.required, Validators.maxLength(200)]],
       email: [this.selectedRow?.email, [Validators.required, Validators.email]],
-      zipCode: [this.selectedRow?.address.zipCode, Validators.required],
-      city: [this.selectedRow?.address.city, Validators.required],
-      houseAddress: [this.selectedRow?.address.houseAddress, Validators.required],
+      zipCode: [this.selectedRow?.zipCode, Validators.required],
+      city: [this.selectedRow?.city, Validators.required],
+      houseAddress: [this.selectedRow?.houseAddress, Validators.required],
     });
   }
 
@@ -40,7 +40,7 @@ export class ModifyCustomerDialogComponent {
     }
 
     var data = new CustomerEditRegisterDto();
-    data.customerId = this.selectedRow!.customerId;
+    data.customerId = this.selectedRow!?.customerId;
     data.name = this.formGroup.controls['name'].value;
     data.email = this.formGroup.controls['email'].value;
     data.zipCode = this.formGroup.controls['zipCode'].value;

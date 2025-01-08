@@ -2,7 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Work, WorkStatusEnum } from '../work.model';
-import { Address, Customer } from '../../customers/customers.model';
+import { Address, Customer, CustomerDto } from '../../customers/customers.model';
+import { CustomerService } from '../../customers/customers.service';
+import { MatSelectChange } from '@angular/material/select';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-modify-work-dialog',
@@ -14,16 +17,20 @@ export class ModifyWorkDialogComponent {
   selectedRow?: Work;
   WorkStatuses = WorkStatusEnum;
   customers: Customer[] = [];
-  addresses: Address[] = [];
+  address!: Address;
+  selectedCustomer!: CustomerDto;
+
   constructor(
     private matDialogRef: MatDialogRef<ModifyWorkDialogComponent>,
     private formBuilder: FormBuilder,
+    private customerService: CustomerService,
     @Inject(MAT_DIALOG_DATA) public data: Work
   ) {
     this.selectedRow = data;
   }
 
   ngOnInit(): void {
+    this.getCustomers(false);
     this.initForm();
   }
 
@@ -38,6 +45,27 @@ export class ModifyWorkDialogComponent {
       price: [this.selectedRow?.price, Validators.required],
     });
   }
+
+  getCustomers(skipLoading: boolean) {
+    this.customerService.getData(0, 0, '', '', '', skipLoading).subscribe(customersList => {
+      if (customersList.data && customersList.data.length > 0) {
+        this.customers = customersList.data;
+
+      }
+    });
+  }
+
+  checkDefaultAddress(checked: MatCheckboxChange) {
+    if (checked.checked) {
+      this.formGroup.controls['address'].setValue(this.selectedCustomer.address.addressId);
+    }
+  }
+
+  selectCustomer(selected: MatSelectChange) {
+    this.selectedCustomer = selected.value;
+    this.address = this.selectedCustomer.address;
+  }
+
 
   onSubmit() {
     if (this.formGroup.invalid) {

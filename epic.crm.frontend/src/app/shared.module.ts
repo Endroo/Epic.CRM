@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -10,6 +10,7 @@ import { MaterialModule } from './material.module';
 import { ConfirmationDialogComponent } from './common/components/confirmation-dialog/confirmation-dialog.component';
 import { EnumToArrayPipe } from './common/pipes/enum-to-array-pipe';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { CustomInterceptor } from './common/interceptors/custom.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,11 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
       provide: APP_INITIALIZER,
       useFactory: loadSettings,
       deps: [AppConfig],
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomInterceptor,
       multi: true
     },
     DatePipe,

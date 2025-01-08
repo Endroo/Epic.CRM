@@ -1,4 +1,5 @@
-﻿using Epic.CRM.BusinessLogic.Helpers;
+﻿using Azure.Core;
+using Epic.CRM.BusinessLogic.Helpers;
 using Epic.CRM.BusinessLogic.Interfaces;
 using Epic.CRM.DataDomain.Dtos;
 using Epic.CRM.DataDomain.Models;
@@ -26,6 +27,30 @@ namespace Epic.CRM.WebApi.Controllers
             _userManager = userManager;
             _appUserManager = appUserManager;
         }
+
+        [HttpGet("getCurrentUser")]
+        [ProducesResponseType(typeof(LoggedInUserDto), 200)]
+        public async Task<IActionResult> GetLoggedUser()
+        {
+            var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(identityUserId))
+                return Ok();
+
+            var identityUserResult = await _appUserManager.GetByIdentityUserId(identityUserId);
+            if (identityUserResult.Data is not null)
+            {
+                var user = identityUserResult.Data;
+                return Ok(new LoggedInUserDto
+                {
+                    Name = user.Name,
+                    Email = user.Email,
+                    IsAdmin = user.IsAdmin
+                });
+            }
+            return BadRequest("No user found");
+        }
+
+
 
         [HttpPost("login")]
         [ProducesResponseType(typeof(LoggedInUserDto), 200)]
@@ -67,14 +92,14 @@ namespace Epic.CRM.WebApi.Controllers
         {
             try
             {
-                await _signInManager.SignOutAsync();
+             await _signInManager.SignOutAsync();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
             
-            return Ok();
+            return Ok(true);
         }
     }
 }

@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { EpicCRMCookieService } from './common/services/cookie.service';
 import { LocalStorageService } from './common/services/local-storage.service';
+import { LoginService } from './login/login.service';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +14,11 @@ export class AppComponent {
 
   constructor(
     private translateService: TranslateService,
-    private localStorageService: LocalStorageService) {
+    private localStorageService: LocalStorageService,
+    private accountService: LoginService) {
     this.setLanguage();
   }
+
 
   setLanguage() {
     const userLanguage = this.localStorageService.getLanguage();
@@ -27,5 +31,4 @@ export class AppComponent {
       this.translateService.setDefaultLang('en');
     }
   }
-
 }

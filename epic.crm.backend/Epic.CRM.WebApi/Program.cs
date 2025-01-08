@@ -60,7 +60,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.ConfigureApplicationCookie(options => {
     options.LoginPath = null; 
-    options.LogoutPath = null; 
+    options.LogoutPath = null;
+    options.Cookie.Name = "USER_TOKEN";
     options.Events.OnRedirectToLogin = context => {
         context.Response.StatusCode = 401;
         return Task.CompletedTask;

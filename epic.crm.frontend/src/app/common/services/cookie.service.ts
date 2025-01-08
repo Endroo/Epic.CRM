@@ -9,8 +9,13 @@ export class EpicCRMCookieService {
     throw new Error('Method not implemented.');
   }
   private readonly USERNAME = 'userName';
+  private readonly TOKEN = 'USER_TOKEN';
 
   constructor(private cookieService: CookieService) { }
+
+  public getToken() {
+    return this.cookieService.get(this.TOKEN);
+  }
 
   public getUsername(): string {
     return this.cookieService.get(this.USERNAME);

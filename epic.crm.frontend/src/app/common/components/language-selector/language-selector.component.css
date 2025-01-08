@@ -1,3 +1,7 @@
 .language-image {
   height: 1.5em;
 }
+.language-icon {
+  padding-top: 2px !important;
+}
+

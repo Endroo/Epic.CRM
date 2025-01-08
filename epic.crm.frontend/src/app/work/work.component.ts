@@ -71,9 +71,12 @@ export class WorkComponent extends BaseComponent {
     }
   }
 
+
+
   add() {
     const dialogRef = this.dialog.open(ModifyWorkDialogComponent, {
-      disableClose: true
+      disableClose: true,
+      width:'30%'
     });
 
     dialogRef.afterClosed().subscribe((filledData: WorkEditRegisterDto) => {
@@ -95,7 +98,8 @@ export class WorkComponent extends BaseComponent {
     if (this.selectedDataRow) {
       const dialogRef = this.dialog.open(ModifyWorkDialogComponent, {
         disableClose: true,
-        data: this.selectedDataRow
+        data: this.selectedDataRow,
+        width: '30%'
       });
 
       dialogRef.afterClosed().subscribe((filledData: WorkDto) => {

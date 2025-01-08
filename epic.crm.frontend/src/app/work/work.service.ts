@@ -35,17 +35,12 @@ export class WorkService extends BaseService {
   }
 
   put(id: number, form: WorkDto): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work";
-    let params = new HttpParams();
-    params = params.set('id', id);
-    params = params.set('form', JSON.stringify(form));
-    return this.http.put<Result>(url, { params });
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work" + form.workId;
+    return this.http.put<Result>(url, form);
   }
 
   delete(id: number): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work";
-    let params = new HttpParams();
-    params = params.set('id', id);
-    return this.http.delete<Result>(url, { params });
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work/" + id.toString();
+    return this.http.delete<Result>(url);
   }
 }
