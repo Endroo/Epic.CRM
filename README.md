@@ -1,7 +1,5 @@
 # Epic.CRM
 
-## Alkalmazás indítása
-
 ## Backend
 Epic.CRM.WebApi projekt indítása a VS-ből.
 <!-- blank line -->
