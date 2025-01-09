@@ -57,7 +57,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -72,11 +72,11 @@ namespace Epic.CRM.BusinessLogic.Managers
                 if (customer is not null)
                     _customerRepository.Delete(customer);
                 else
-                    result.Errors.Add("No customer found");
+                    result.Errors.Add(ErrorCodes.customer_error_no_customer_found);
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -95,12 +95,12 @@ namespace Epic.CRM.BusinessLogic.Managers
                     _customerRepository.Update(customer);
                 }
                 else
-                    result.Errors.Add("No customer found");
+                    result.Errors.Add(ErrorCodes.customer_error_no_customer_found);
 
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -126,7 +126,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -139,13 +139,13 @@ namespace Epic.CRM.BusinessLogic.Managers
             {
                 var customer =  _customerRepository.GetById(customerId);
                 if (customer is null)
-                    result.Errors.Add($"No customer found by Id: {customerId}");
+                    result.Errors.Add(ErrorCodes.customer_error_no_customer_found);
 
                 result.Data = new CustomerDto().Map(customer);
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -155,12 +155,12 @@ namespace Epic.CRM.BusinessLogic.Managers
         {
             var result = new Result();
             if (dto is null)
-                result.Errors.Add("Invalid or missing register form");
+                result.Errors.Add(ErrorCodes.customer_error_invalid_form);
 
             if (string.IsNullOrWhiteSpace(dto.Email))
-                result.Errors.Add("Invalid or missing email");
+                result.Errors.Add(ErrorCodes.customer_error_invalid_email);
             if (string.IsNullOrWhiteSpace(dto.Name))
-                result.Errors.Add("Invalid or missing name");
+                result.Errors.Add(ErrorCodes.customer_error_invalid_name);
 
             return result;
         }

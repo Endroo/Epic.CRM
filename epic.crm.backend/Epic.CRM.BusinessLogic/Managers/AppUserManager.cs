@@ -56,7 +56,7 @@ namespace Epic.CRM.BusinessLogic.Managers
 
                         if (!registerUserResult.Succeeded)
                         {
-                            result.Errors.AddRange(registerUserResult.Errors.Select(x => x.Description));
+                            result.Errors.Add(ErrorCodes.identity_error_cant_create_user);
                             return result;
                         }
 
@@ -67,7 +67,7 @@ namespace Epic.CRM.BusinessLogic.Managers
 
                         if (!addToRoleResult.Succeeded)
                         {
-                            result.Errors.AddRange(addToRoleResult.Errors.Select(x => x.Description));
+                            result.Errors.Add(ErrorCodes.identity_error_cant_add_to_role);
                             return result;
                         }
 
@@ -84,7 +84,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -103,7 +103,7 @@ namespace Epic.CRM.BusinessLogic.Managers
                         _appUserRepository.Delete(appUser);
                     else
                     {
-                        result.Errors.Add($"No user found");
+                        result.Errors.Add(ErrorCodes.account_error_no_user_found);
                         return result;
                     }
 
@@ -114,12 +114,12 @@ namespace Epic.CRM.BusinessLogic.Managers
                         var deleteResult = await _userManager.DeleteAsync(identityUser);
                         if(!deleteResult.Succeeded)
                         {
-                            result.Errors.AddRange(deleteResult.Errors.Select(x => x.Description));
+                            result.Errors.Add(ErrorCodes.identity_error_cant_delete_user);
                         }     
                     }                        
                     else
                     {
-                        result.Errors.Add($"No user found");
+                        result.Errors.Add(ErrorCodes.account_error_no_user_found);
                         return result;
                     }
 
@@ -128,7 +128,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -152,7 +152,7 @@ namespace Epic.CRM.BusinessLogic.Managers
                                 var identityUser = await _userManager.FindByIdAsync(appUser.AspNetUserId);
                                 if (identityUser is null)
                                 {
-                                    result.Errors.Add("User not found.");
+                                    result.Errors.Add(ErrorCodes.account_error_no_user_found);
                                     return result;
                                 }
 
@@ -161,7 +161,7 @@ namespace Epic.CRM.BusinessLogic.Managers
                                     var removeResult = await _userManager.RemoveFromRoleAsync(identityUser, "Admin");
                                     if (!removeResult.Succeeded)
                                     {
-                                        result.Errors.AddRange(removeResult.Errors.Select(x => x.Description));
+                                        result.Errors.Add(ErrorCodes.identity_error_cant_remove_from_role);
                                         return result;
                                     }
                                 }
@@ -171,7 +171,7 @@ namespace Epic.CRM.BusinessLogic.Managers
 
                                     if (!addToRoleResult.Succeeded)
                                     {
-                                        result.Errors.AddRange(addToRoleResult.Errors.Select(x => x.Description));
+                                        result.Errors.Add(ErrorCodes.identity_error_cant_add_to_role);
                                         return result;
                                     }
                                 }
@@ -183,7 +183,7 @@ namespace Epic.CRM.BusinessLogic.Managers
 
                         }
                         else
-                            result.Errors.Add($"No user found");
+                            result.Errors.Add(ErrorCodes.account_error_no_user_found);
 
                         scope.Complete();   
                     }
@@ -193,7 +193,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -210,7 +210,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -228,14 +228,14 @@ namespace Epic.CRM.BusinessLogic.Managers
                     if (identityUser is not null)
                         result.Data = new AppUserDto().Map(appUser);
                     else
-                        result.Errors.Add($"No user found");
+                        result.Errors.Add(ErrorCodes.account_error_no_user_found);
                 }
                 else
-                    result.Errors.Add($"No user found");
+                    result.Errors.Add(ErrorCodes.account_error_no_user_found);
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -257,11 +257,11 @@ namespace Epic.CRM.BusinessLogic.Managers
                     result.Data = new AppUserDto().Map(appUser);
                 }
                 else
-                    result.Errors.Add($"No user found");
+                    result.Errors.Add(ErrorCodes.account_error_no_user_found);
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -280,14 +280,14 @@ namespace Epic.CRM.BusinessLogic.Managers
                     if (appUser is not null)
                         result.Data = new AppUserDto().Map(appUser);
                     else
-                        result.Errors.Add($"No user found. Username: {identityUser.Email}");
+                        result.Errors.Add(ErrorCodes.account_error_no_user_found);
                 }
                 else
-                    result.Errors.Add("No user found");
+                    result.Errors.Add(ErrorCodes.account_error_no_user_found);
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -311,7 +311,7 @@ namespace Epic.CRM.BusinessLogic.Managers
         //    }
         //    catch (Exception ex)
         //    {
-        //        result.Errors.Add(ex.ToString());
+        //        result.Errors.Add(ErrorCodes.common_error_internal_server_error);
         //    }
 
         //    return result;
@@ -321,18 +321,18 @@ namespace Epic.CRM.BusinessLogic.Managers
         {
             var result = new Result();
             if (dto is null)
-                result.Errors.Add("Invalid or missing register form");
+                result.Errors.Add(ErrorCodes.user_error_invalid_form);
 
             var identityUser = _userManager.FindByNameAsync(dto.Email).Result;
 
             if (identityUser is not null)
-                result.Errors.Add($"User already registered. Username: {dto.Email}");
+                result.Errors.Add(ErrorCodes.user_error_user_already_registered);
             if (string.IsNullOrWhiteSpace(dto.Email))
-                result.Errors.Add("Invalid or missing email");
+                result.Errors.Add(ErrorCodes.user_error_invalid_email);
             if (string.IsNullOrWhiteSpace(dto.Name))
-                result.Errors.Add("Invalid or missing name");
+                result.Errors.Add(ErrorCodes.user_error_invalid_name);
             if (string.IsNullOrWhiteSpace(dto.Profession))
-                result.Errors.Add("Invalid or missing profession");
+                result.Errors.Add(ErrorCodes.user_error_invalid_profession);
 
             return result;
         }
@@ -342,13 +342,13 @@ namespace Epic.CRM.BusinessLogic.Managers
             var result = new Result();
 
             if (dto is null)
-                result.Errors.Add("Invalid or missing edit form");
+                result.Errors.Add(ErrorCodes.user_error_invalid_form);
             if (string.IsNullOrWhiteSpace(dto.Name))
-                result.Errors.Add("Invalid or missing name");
+                result.Errors.Add(ErrorCodes.user_error_invalid_name);
             if (string.IsNullOrWhiteSpace(dto.Profession))
-                result.Errors.Add("Invalid or missing profession");
+                result.Errors.Add(ErrorCodes.user_error_invalid_profession);
             if (dto.IsAdmin is null)
-                result.Errors.Add("Missing Admin information");
+                result.Errors.Add(ErrorCodes.user_error_invalid_role);
 
             return result;
         }

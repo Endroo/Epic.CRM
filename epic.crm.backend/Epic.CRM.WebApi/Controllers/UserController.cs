@@ -98,13 +98,13 @@ namespace Epic.CRM.WebApi.Controllers
 
             var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrWhiteSpace(identityUserId))
-                return Unauthorized("No logged user");
+                return Unauthorized(ErrorCodes.account_error_no_logged_user);
 
             var identityUserResult = await _appUserManager.GetByIdentityUserId(identityUserId);
             if (identityUserResult.ResultStatus == ResultStatusEnum.Success)
             {
                 if (identityUserResult.Data.AppUserId == id)
-                    return BadRequest("Can not delete logged in user");
+                    return BadRequest(ErrorCodes.user_error_cant_delete_loggedin_user);
 
                 var result = await _appUserManager.DeleteUser(id.Value);
 

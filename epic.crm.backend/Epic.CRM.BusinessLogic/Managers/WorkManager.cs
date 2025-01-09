@@ -56,7 +56,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -71,11 +71,11 @@ namespace Epic.CRM.BusinessLogic.Managers
                 if (work is not null)
                     _workRepository.Delete(work);
                 else
-                    result.Errors.Add("No work found");
+                    result.Errors.Add(ErrorCodes.work_error_no_customer_found);
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -94,12 +94,12 @@ namespace Epic.CRM.BusinessLogic.Managers
                     _workRepository.Update(work);
                 }
                 else
-                    result.Errors.Add("No work found");
+                    result.Errors.Add(ErrorCodes.work_error_no_customer_found);
 
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -125,7 +125,7 @@ namespace Epic.CRM.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(ex.ToString());
+                result.Errors.Add(ErrorCodes.common_error_internal_server_error);
             }
 
             return result;
@@ -135,10 +135,10 @@ namespace Epic.CRM.BusinessLogic.Managers
         {
             var result = new Result();
             if (dto is null)
-                result.Errors.Add("Invalid or missing register form");
+                result.Errors.Add(ErrorCodes.work_error_invalid_form);
 
             if (string.IsNullOrWhiteSpace(dto.Name))
-                result.Errors.Add("Invalid or missing name");
+                result.Errors.Add(ErrorCodes.work_error_invalid_name);
 
             return result;
         }

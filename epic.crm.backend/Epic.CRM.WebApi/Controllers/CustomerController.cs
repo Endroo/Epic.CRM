@@ -32,7 +32,7 @@ namespace Epic.CRM.WebApi.Controllers
         {
             var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrWhiteSpace(identityUserId))
-                return Unauthorized("No logged user");
+                return Unauthorized(ErrorCodes.account_error_no_logged_user);
 
             var result = await _customerManager.GetAll(identityUserId, queryParams);
 
@@ -56,7 +56,7 @@ namespace Epic.CRM.WebApi.Controllers
 
             var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrWhiteSpace(identityUserId))
-                return Unauthorized("No logged user");
+                return Unauthorized(ErrorCodes.account_error_no_logged_user);
 
             var result = await _customerManager.CreateCustomer(identityUserId, form);
 

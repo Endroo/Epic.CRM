@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using Epic.CRM.BusinessLogic.Helpers;
 using Epic.CRM.BusinessLogic.Interfaces;
+using Epic.CRM.Common;
 using Epic.CRM.DataDomain.Dtos;
 using Epic.CRM.DataDomain.Models;
 
@@ -47,28 +48,30 @@ namespace Epic.CRM.WebApi.Controllers
                     IsAdmin = user.IsAdmin
                 });
             }
-            return BadRequest("No user found");
+            return BadRequest(ErrorCodes.account_error_no_user_found);
         }
 
 
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(LoggedInUserDto), 200)]
+        [ProducesResponseType(typeof(DataResult<LoggedInUserDto>), 200)]
         public async Task<IActionResult> Login([FromBody] LoginDto form)
         {
             if (form.UserName is null || form.Password is null)
-                return BadRequest("User name or password can not be null");
+                return BadRequest(ErrorCodes.account_error_username_or_password_null);
 
-            var result = await _signInManager.PasswordSignInAsync(form.UserName, form.Password, isPersistent: true, lockoutOnFailure: false);
+            var result = new DataResult<LoggedInUserDto>();
 
-            if (!result.Succeeded)
+            var loginResult = await _signInManager.PasswordSignInAsync(form.UserName, form.Password, isPersistent: true, lockoutOnFailure: false);
+
+            if (!loginResult.Succeeded)
             {
-                return Unauthorized(result.ToString());
+                return BadRequest(ErrorCodes.account_error_wrong_username_or_password);
             }
 
             var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrWhiteSpace(identityUserId))
-                return Unauthorized("No logged user");
+                return Unauthorized(ErrorCodes.account_error_no_logged_user);
 
             var identityUserResult = await _appUserManager.GetByIdentityUserId(identityUserId);
             if (identityUserResult.Data is not null)
@@ -83,7 +86,7 @@ namespace Epic.CRM.WebApi.Controllers
             }
             else
             {
-                return BadRequest("No user found");
+                return BadRequest(ErrorCodes.account_error_no_user_found);
             }
         }
 
@@ -92,11 +95,11 @@ namespace Epic.CRM.WebApi.Controllers
         {
             try
             {
-             await _signInManager.SignOutAsync();
+                await _signInManager.SignOutAsync();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest($"{ErrorCodes.common_error_internal_server_error}");
             }
             
             return Ok(true);
