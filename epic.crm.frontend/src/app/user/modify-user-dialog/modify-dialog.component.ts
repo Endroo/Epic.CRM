@@ -49,7 +49,7 @@ export class ModifyUserDialogComponent {
     data.name = this.formGroup.controls['name'].value;
     data.email = this.formGroup.controls['email'].value;
     data.profession = this.formGroup.controls['profession'].value;
-    data.isAdmin = this.formGroup.controls['isAdmin'].value;
+    data.isAdmin = this.formGroup.controls['isAdmin'].value ?? false;
     data.password = this.formGroup.controls['password'].value;
 
     this.matDialogRef.close(data);
