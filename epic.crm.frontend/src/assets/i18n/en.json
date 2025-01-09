@@ -28,7 +28,18 @@
     "deleteQuestion": "Do you want to delete selected record?",
     "search": "Search",
     "confirmation": "Confirmation",
-    "loggedIn": "You are currently logged in."
+    "loggedIn": "You are currently logged in.",
+    "error": {
+      "internal_server_error": "Internal server error"
+    }
+  },
+  "account": {
+    "error": {
+      "username_or_password_null": "Username or password is empty",
+      "wrong_username_or_password": "Wrong username or password",
+      "no_logged_user": "No logged user",
+      "no_user_found": "User not found"
+    }
   },
   "login": {
     "username": "Username",
@@ -44,7 +55,24 @@
     "profession": "Profession",
     "workCount": "Work Count",
     "customerCount": "Customer Count",
-    "isAdmin": "Is admin"
+    "isAdmin": "Is admin",
+    "error": {
+      "cant_delete_loggedin_user": "You can not delete logged in user",
+      "invalid_form": "Invalid form",
+      "user_already_registered": "User already registered",
+      "invalid_email": "Invalid email",
+      "invalid_name": "Invalid name",
+      "invalid_profession": "Invalid profession",
+      "invalid_role": "Invalid role"
+    }
+  },
+  "identity": {
+    "error": {
+      "cant_add_to_role": "You can not add to role",
+      "cant_remove_from_role": "You can not remove from role",
+      "cant_create_user": "You can not create user",
+      "cant_delete_user": "You can not delete user"
+    }
   },
   "customer": {
     "customerId": "ID",
@@ -55,7 +83,13 @@
     "zip": "ZIP",
     "city": "City",
     "houseAddress": "Street and house number",
-    "addressInformation": "Address information"
+    "addressInformation": "Address information",
+    "error": {
+      "no_customer_found": "Customer not found",
+      "invalid_form": "Invalid form",
+      "invalid_email": "Invalid email",
+      "invalid_name": "Invalid name"
+    }
   },
   "work": {
     "title": "Works",
@@ -66,7 +100,12 @@
     "description": "Description",
     "addressLiteral": "Address",
     "workStatus": "Status",
-    "price": "Price (HUF)"
+    "price": "Price (HUF)",
+    "error": {
+      "no_customer_found": "Customer not found",
+      "invalid_form": "Invalid form",
+      "invalid_name": "Invalid name"
+    }
   },
   "workStatusEnum": {
     "1": "Planned",
@@ -75,17 +114,8 @@
     "4": "Deleted"
   },
   "error": {
-    "badRequest": "Could not connect to server: 400 - Bad request",
-    "unauthorized": "Could not connect to server: 401 - Unauthorized",
-    "forbidden": "Could not connect to server: 403 - Forbidden",
-    "notFound": "Could not connect to server: 404 - Not found",
-    "internalServerError": "Could not connect to server: 500 - Internal server error",
-    "serviceUnavailable": "Could not connect to server: 503 - Service unavailable",
-    "unspecified": "Could not connect to server: Unspecified error",
-    "clientSide": "A client-side error occurred",
-    "required": {
-      "password": "Password is required!",
-      "username": "Username is required!"
-    }
+    "badRequest": "400 - Bad request",
+    "unspecified": "Unspecified error",
+    "clientSide": "A client-side error occurred"
   }
 }
