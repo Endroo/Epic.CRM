@@ -11,6 +11,7 @@ import { ConfirmationDialogComponent } from './common/components/confirmation-di
 import { EnumToArrayPipe } from './common/pipes/enum-to-array-pipe';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { CustomInterceptor } from './common/interceptors/custom.interceptor';
+import { HttpErrorInterceptor } from './common/interceptors/http-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,11 @@ import { CustomInterceptor } from './common/interceptors/custom.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CustomInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
       multi: true
     },
     DatePipe,

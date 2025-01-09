@@ -47,6 +47,7 @@
     "isAdmin": "Admin"
   },
   "customer": {
+    "customerId": "ID",
     "title": "Ügyfelek",
     "name": "Név",
     "email": "Email",
@@ -72,5 +73,19 @@
     "2": "Folyamatban",
     "3": "Kész",
     "4": "Törölve"
+  },
+  "error": {
+    "badRequest": "Nem sikerült csatlakozni a szerverhez: 400 - Hibás kérés",
+    "unauthorized": "Nem sikerült csatlakozni a szerverhez: 401 - Jogosulatlan",
+    "forbidden": "Nem sikerült csatlakozni a szerverhez: 403 - Tiltott",
+    "notFound": "Nem sikerült csatlakozni a szerverhez: 404 - Nem található",
+    "internalServerError": "Nem sikerült csatlakozni a szerverhez: 500 - Belső szerverhiba",
+    "serviceUnavailable": "Nem sikerült csatlakozni a szerverhez: 503 - A szolgáltatás nem elérhető",
+    "unspecified": "Nem sikerült csatlakozni a szerverhez: Meghatározatlan hiba",
+    "clientSide": "Kliensoldali hiba történt",
+    "kötelező": {
+      "password": "Jelszó kitöltése kötelező!",
+      "username": "Felhasználónév kitöltése kötelező!"
+    }
   }
 }

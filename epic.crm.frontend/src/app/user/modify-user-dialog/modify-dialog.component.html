@@ -14,19 +14,19 @@
 
     <div class="mb-2" *ngIf="!selectedRow">
       <mat-form-field>
-        <mat-label>{{ 'user.password' | translate }}</mat-label>
-        <input matInput formControlName="password" required type="password">
-        <mat-error class="smaller-text" *ngIf="formGroup.controls['password'].hasError('required')">
+        <mat-label>{{ 'user.email' | translate }}</mat-label>
+        <input matInput formControlName="email" required type="email" maxlength="250">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['email'].hasError('required')">
           <span [innerHTML]="'validation.required' | translate"></span>
         </mat-error>
       </mat-form-field>
     </div>
 
-    <div class="mb-2">
+    <div class="mb-2" *ngIf="!selectedRow">
       <mat-form-field>
-        <mat-label>{{ 'user.email' | translate }}</mat-label>
-        <input matInput formControlName="email" required type="email" maxlength="250">
-        <mat-error class="smaller-text" *ngIf="formGroup.controls['email'].hasError('required')">
+        <mat-label>{{ 'user.password' | translate }}</mat-label>
+        <input matInput formControlName="password" required type="password">
+        <mat-error class="smaller-text" *ngIf="formGroup.controls['password'].hasError('required')">
           <span [innerHTML]="'validation.required' | translate"></span>
         </mat-error>
       </mat-form-field>

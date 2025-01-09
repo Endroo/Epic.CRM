@@ -28,14 +28,14 @@ export class LoginService {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     this.getCurrentUser().subscribe(result => {
       LoginService.loginUser = result;
+      if (LoginService.loginUser) {
+        return of(true);
+      } else {
+        this.router.navigate(['/login']);
+        return of(false);
+      }
     });
-
-    if (LoginService.loginUser) {
-      return of(true);
-    } else {
-      this.router.navigate(['/']);
-      return of(false);
-    }
+    return of(true);
   }
 
   login(username: string, password: string): Observable<LoggedUserDto | null> {
@@ -68,11 +68,11 @@ export class LoginService {
     this.http.post<boolean>(url, {}).subscribe(result => {
       if (result) {
         LoginService.loginUser = undefined;
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
       }
     }),
       catchError((error: any, caught: Observable<boolean>) => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
         return of(false);
     });
   }

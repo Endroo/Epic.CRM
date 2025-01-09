@@ -18,6 +18,7 @@ import { ModifyCustomerDialogComponent } from './modify-customer-dialog/modify-c
 })
 export class CustomerComponent extends BaseComponent{
   displayedColumns: string[] = [
+    'customerId',
     'Name',
     'Email',
     'AddressLiteral'

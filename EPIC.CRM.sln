@@ -32,6 +32,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "src", "epic.crm.frontend\sr
 		SlnRelativePath = "epic.crm.frontend\src\"
 	EndProjectSection
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Epic.CRM.Database", "epic.crm.database\Epic.CRM.Database.sqlproj", "{0958F8E1-A7CE-4061-AA75-426200D26BF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,11 @@ Global
 		{7CBC1116-08C0-4469-8D0D-F22AE73C9957}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CBC1116-08C0-4469-8D0D-F22AE73C9957}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CBC1116-08C0-4469-8D0D-F22AE73C9957}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{0958F8E1-A7CE-4061-AA75-426200D26BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0958F8E1-A7CE-4061-AA75-426200D26BF5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0958F8E1-A7CE-4061-AA75-426200D26BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0958F8E1-A7CE-4061-AA75-426200D26BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0958F8E1-A7CE-4061-AA75-426200D26BF5}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
