@@ -40,7 +40,7 @@ export class CustomerService extends BaseService {
   }
 
   put(id: number, form: CustomerEditRegisterDto): Observable<Result> {
-    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer" + form.customerId;
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/customer/" + form.customerId;
     return this.http.put<Result>(url, form);
   }
 

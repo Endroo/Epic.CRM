@@ -44,7 +44,7 @@ namespace Epic.CRM.DataDomain.Repositories
                     case "id":
                         query = queryParams.SortOrder == "desc" ?
                                 query.OrderByDescending(x => x.CustomerId) :
-                                query.OrderBy(x => x.AppUserId);
+                                query.OrderBy(x => x.CustomerId);
                         break;
                     default:
                         query = query.OrderByDescending(x => x.CustomerId);

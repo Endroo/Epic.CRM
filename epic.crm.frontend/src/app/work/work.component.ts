@@ -145,7 +145,7 @@ export class WorkComponent extends BaseComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.service.delete(this.selectedDataRow!.appUserId).subscribe((deleteResult: Result) => {
+        this.service.delete(this.selectedDataRow!.workId).subscribe((deleteResult: Result) => {
           if (deleteResult.resultStatus == ResultStatusEnum.Success) {
             this.popupService.showPopup('common.deleteSuccessful', PopupType.Success);
             this.getData(false);

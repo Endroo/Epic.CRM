@@ -56,13 +56,14 @@ namespace Epic.CRM.DataDomain.Repositories
                                 query.OrderByDescending(x => x.WorkStatus.Name) :
                                 query.OrderBy(x => x.WorkStatus.Name);
                         break;
+                    case "workid":
                     case "id":
                         query = queryParams.SortOrder == "desc" ?
-                                query.OrderByDescending(x => x.CustomerId) :
-                                query.OrderBy(x => x.AppUserId);
+                                query.OrderByDescending(x => x.WorkId) :
+                                query.OrderBy(x => x.WorkId);
                         break;
                     default:
-                        query = query.OrderByDescending(x => x.CustomerId);
+                        query = query.OrderByDescending(x => x.WorkId);
                         break;
                 }
             }

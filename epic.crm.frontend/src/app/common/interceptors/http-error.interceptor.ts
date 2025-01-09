@@ -1,6 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, isArray } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -31,18 +31,21 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   }
 
   processValidationError(error: any): void {
-    const badRequestError: BadRequestError = error as BadRequestError;
+    const badRequestError: string[] = error.error as string[];
 
     if (badRequestError) {
       let translateParameters: any = {};
-      if (badRequestError.error && badRequestError.error.length > 0) {
-        translateParameters = badRequestError.error;
+      if (isArray(badRequestError)) {
+        badRequestError.forEach((element: string) => {
+          translateParameters = element;
+        });
+      } else {
+        translateParameters = badRequestError;
       }
 
       this.translateService
         .get(translateParameters)
         .subscribe((result: string) => {
-
           this.toastrService.error(result);
         });
     } else {
