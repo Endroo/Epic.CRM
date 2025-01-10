@@ -85,5 +85,23 @@ namespace Epic.CRM.WebApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("calendar")]
+        [ProducesResponseType(typeof(DataResult<IEnumerable<CalendarDto>>), 200)]
+        public async Task<IActionResult> Calendar()
+        {
+            var identityUserId = Request.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(identityUserId))
+                return Unauthorized(ErrorCodes.account_error_no_logged_user);
+
+            var result = await _workManager.GetAll(identityUserId, new QueryParams { });
+
+            return Ok(result.Data?.Select(x => new CalendarDto
+            {
+                Date = x.WorkDateTime.Value,
+                Title = x.Name,
+                Description = $"{x.Name} - {x.CustomerName} - {x.AddressLiteral}"
+            }));
+        }
     }
 }
