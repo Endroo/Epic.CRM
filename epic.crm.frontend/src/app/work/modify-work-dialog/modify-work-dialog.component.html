@@ -42,7 +42,7 @@
     <div class="mb-3" *ngIf="address">
       <div class="row">
         <div class="col-md-6">
-          <mat-checkbox color="primary" (change)="checkDefaultAddress($event)">{{address.zipCode}} {{address.city}} {{address.houseAddress}}</mat-checkbox>
+          <mat-checkbox color="primary" [checked]="selectedRow?.addressId !== null" (change)="checkDefaultAddress($event)">{{address.zipCode}} {{address.city}} {{address.houseAddress}}</mat-checkbox>
         </div>
         <div class="col-md-6" *ngIf="!selectedDefaultAddress">
           <button mat-raised-button color="primary" (click)="onAddAddress()">{{'common.add' | translate}}</button>

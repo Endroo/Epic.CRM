@@ -4,14 +4,14 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { LanguageSelectorComponent } from './common/components/language-selector/language-selector.component';
-import { AppConfig } from './common/services/app-config.service';
-import { MaterialModule } from './material.module';
-import { ConfirmationDialogComponent } from './common/components/confirmation-dialog/confirmation-dialog.component';
-import { EnumToArrayPipe } from './common/pipes/enum-to-array-pipe';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { ConfirmationDialogComponent } from './common/components/confirmation-dialog/confirmation-dialog.component';
+import { LanguageSelectorComponent } from './common/components/language-selector/language-selector.component';
 import { CustomInterceptor } from './common/interceptors/custom.interceptor';
 import { HttpErrorInterceptor } from './common/interceptors/http-error.interceptor';
+import { EnumToArrayPipe } from './common/pipes/enum-to-array-pipe';
+import { AppConfig } from './common/services/app-config.service';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [

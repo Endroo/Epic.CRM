@@ -9,7 +9,8 @@
   "menu": {
     "users": "Users",
     "works": "Works",
-    "customers": "Customers"
+    "customers": "Customers",
+    "calendar": "Work calendar"
   },
   "common": {
     "add": "Add",
@@ -117,5 +118,13 @@
     "badRequest": "400 - Bad request",
     "unspecified": "Unspecified error",
     "clientSide": "A client-side error occurred"
+  },
+  "calendar": {
+    "previous": "Previous",
+    "today": "Today",
+    "next": "Next",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day"
   }
 }

@@ -9,9 +9,20 @@
       <li class="nav-item" *ngIf="loginUser && loginUser.isAdmin">
         <a class="nav-link" routerLink="/users">{{'menu.users' | translate}}</a>
       </li>
-      <li class="nav-item" *ngIf="loginUser">
-        <a class="nav-link" routerLink="/works">{{'menu.works' | translate}}</a>
+
+      <li class="nav-item dropdown" *ngIf="loginUser">
+        <a class="nav-link dropdown-toggle"  id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+         {{'menu.works' | translate}}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+          <li><a class="dropdown-item" routerLink="/works">{{'menu.works' | translate}}</a></li>
+          <li><a class="dropdown-item" routerLink="/works/calendar">{{'menu.calendar' | translate}}</a></li>
+        </ul>
       </li>
+
+
+
+
       <li class="nav-item" *ngIf="loginUser">
         <a class="nav-link" routerLink="/customers">{{'menu.customers' | translate}}</a>
       </li>

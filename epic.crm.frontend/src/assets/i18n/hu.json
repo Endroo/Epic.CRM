@@ -9,7 +9,8 @@
   "menu": {
     "users": "Felhasználók",
     "works": "Munkák",
-    "customers": "Ügyfelek"
+    "customers": "Ügyfelek",
+    "calendar": "Munka naptár"
   },
   "common": {
     "add": "Hozzáadás",
@@ -117,5 +118,13 @@
     "badRequest": "400 - Hibás kérés",
     "unspecified": "Meghatározatlan hiba",
     "clientSide": "Kliensoldali hiba történt"
+  },
+  "calendar": {
+    "previous": "Előző",
+    "today": "Ma",
+    "next": "Következő",
+    "month": "Hónap",
+    "week": "Hét",
+    "day": "nap"
   }
 }

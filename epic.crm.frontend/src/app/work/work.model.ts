@@ -34,6 +34,12 @@ export class WorkEditRegisterDto extends Work {
   houseAddress!: string;
 }
 
+export class CalendarDto {
+  date!: string;
+  title!: string;
+  description!: string;
+}
+
 export enum WorkStatusEnum {
   Planned = 1,
   InProgress = 2,

@@ -2,10 +2,10 @@ import { DatePipe } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageResult, Result } from '../common/models/result.model';
+import { DataResult, PageResult, Result } from '../common/models/result.model';
 import { AppConfig } from '../common/services/app-config.service';
 import { BaseService } from '../common/services/base.service';
-import { WorkDto, WorkEditRegisterDto } from './work.model';
+import { CalendarDto, WorkDto, WorkEditRegisterDto } from './work.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,11 @@ export class WorkService extends BaseService {
     params = this.setSortParams(params, sortColumn, sortOrder);
     params = this.setFilterParams(params, filter);
     return this.http.get<PageResult<WorkDto[]>>(url, { params, headers: { skipLoading: skipLoading.toString() } });
+  }
+
+  getCalendar(): Observable<CalendarDto[]> {
+    const url = AppConfig.settings.epicCRM.apiBaseUrl + "api/work/calendar";
+    return this.http.get<CalendarDto[]>(url, {});
   }
 
   post(form: WorkEditRegisterDto): Observable<Result> {
