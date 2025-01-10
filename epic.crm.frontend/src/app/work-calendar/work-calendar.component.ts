@@ -68,7 +68,7 @@ export class WorkCalendarComponent  {
           this.events.push({
             start: new Date(item.date),
             color: colors['blue'],
-            title: item.title + ' ' + item.description,
+            title: item.description,
             draggable: false
           });
         });
