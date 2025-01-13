@@ -22,3 +22,4 @@ $my-app-theme: mat-light-theme(( color: ( primary: $my-app-primary, accent: $my-
 
 
 @include angular-material-theme($my-app-theme);
+

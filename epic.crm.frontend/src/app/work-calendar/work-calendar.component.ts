@@ -12,7 +12,7 @@ import localeEn from '@angular/common/locales/en';
 import { LocalStorageService } from '../common/services/local-storage.service';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 registerLocaleData(localeHu);
-registerLocaleData(localeEn); 
+registerLocaleData(localeEn);
 
 
 const colors: Record<string, EventColor> = {
@@ -29,7 +29,7 @@ const colors: Record<string, EventColor> = {
   styleUrls: ['./work-calendar.component.scss']
 })
 
-export class WorkCalendarComponent  {
+export class WorkCalendarComponent {
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
@@ -58,7 +58,7 @@ export class WorkCalendarComponent  {
       }
     });
   }
- 
+
 
   getCalendarData() {
 
@@ -69,7 +69,8 @@ export class WorkCalendarComponent  {
             start: new Date(item.date),
             color: colors['blue'],
             title: item.description,
-            draggable: false
+            draggable: false,
+            allDay: true
           });
         });
         this.refresh.next();
